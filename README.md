@@ -1,5 +1,5 @@
 # [TeleMute](https://github.com/MutePuker/TeleMute)
-TG-CLI based broadcasting bot!
+*TG-CLI based broadcasting bot!*
 # Install
 ```
 cd $HOME
