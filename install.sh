@@ -11,8 +11,6 @@ sudo apt-get dist-upgrade
 sudo ppa-purge
 chmod 777 tg
 chmod 777 launch.sh
-chmod 777 tg
-chmod 777 launch.sh
 RED='\033[0;31m'
 NC='\033[0m'
 CYAN='\033[0;36m'
