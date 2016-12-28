@@ -11,8 +11,7 @@ chmod +x tg
 ./launchsh```
 # Create a bot!
 ```
-* Enjoy Your New Bot! :D
-# Help and more...
+# Help And More...
 send ```Your PM``` to @MutePukerBot in telegram
 # Developers
 * [@MutePuker](https://telegram.me/MutePuker) - Shervin
