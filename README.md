@@ -1,6 +1,6 @@
-# TeleMute
+# [TeleMute](https://github.com/MutePuker/TeleMute)
 TG-CLI based broadcasting bot!
-# install
+# Install
 ```
 cd $HOME
 git clone https://github.com/MutePuker/TeleMute.git
@@ -15,6 +15,7 @@ chmod +x tg
 # Help and more...
 send ```Your PM``` to @MutePukerBot in telegram
 # Developers
-* [@MutePuker](https://telegram.me/MutePuker)
-* [@Hosein_M1](https://telegram.me/Hosein_M1)
+* [@MutePuker](https://telegram.me/MutePuker) - Shervin
+* [@Hosein_M1](https://telegram.me/Hosein_M1) - Hossein
+
 Powered By MuteTeam
