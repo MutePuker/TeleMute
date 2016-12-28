@@ -7,12 +7,9 @@ git clone https://github.com/MutePuker/TeleMute.git
 cd TeleMute
 chmod +x install.sh
 ./install.sh
-chmod +x tg
-./tg
 # Enter a phone number & confirmation code.
-./launchsh```
-# Create a bot!
 ```
+# Create a bot!
 # Help And More...
 send ```Your PM``` to @MutePukerBot in telegram
 # Developers
