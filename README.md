@@ -18,7 +18,7 @@ send ```Your PM``` to @MutePukerBot in telegram
 * [@Hosein_M1](https://telegram.me/Hosein_M1) - Hossein
 
 # Commands
-### Sudo Commands
+### All Commands
 >[!/]createsuper [group name]
 >
 >>[!/]createsuperMute
