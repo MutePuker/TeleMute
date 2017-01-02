@@ -158,6 +158,25 @@ function tdcli_update_callback(data)
       if redis:get('lock_edittg:'..chat_id) and input:match("!!!edit:") then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
 	  end
+	  if input:match("^[#!/][Ll]ock english$") and is_sudo(msg) then
+       if redis:get('lock_entg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>english posting is already locked</b>', 1, 'html')
+       else -- @MuteTeam
+        redis:set('lock_entg:'..chat_id, true)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>english posting has been locked</b>', 1, 'html')
+      end
+      end 
+      if input:match("^[#!/][Uu]nlock english$") and is_sudo(msg) then
+       if not redis:get('lock_entg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>english posting is not locked</b>', 1, 'html')
+       else
+         redis:del('lock_entg:'..chat_id)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>english posting has been unlocked</b>', 1, 'html')
+      end
+      end
+      if redis:get('lock_entg:'..chat_id) and input:match("[A-Z]") then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+	  end
       if input:match("^[#!/][Mm]ute all$") and is_sudo(msg) then
        if redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already on</b>', 1, 'html')
@@ -179,6 +198,12 @@ function tdcli_update_callback(data)
 	  Links = "yes"
 	  else 
 	  Links = "no"
+	 end
+	 local english = 'lock_entg:'..chat_id
+	 if redis:get(en) then
+	  en = "yes"
+	  else 
+	  en = "no"
 	 end
 	 local edit = 'lock_edittg:'..chat_id
 	 if redis:get(edit) then
