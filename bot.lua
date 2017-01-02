@@ -120,6 +120,25 @@ function tdcli_update_callback(data)
       if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
+	  if input:match("^[#!/][Ll]ock username$") and is_sudo(msg) then
+       if redis:get('lock_usernametg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>username posting is already locked</b>', 1, 'html')
+       else -- @MuteTeam
+        redis:set('lock_usernametgtg:'..chat_id, true)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>username posting has been locked</b>', 1, 'html')
+      end
+      end 
+      if input:match("^[#!/][Uu]nlock username$") and is_sudo(msg) then
+       if not redis:get('lock_usernametgtg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>username posting is not locked</b>', 1, 'html')
+       else
+         redis:del('lock_usernametgtg:'..chat_id)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>username posting has been unlocked</b>', 1, 'html')
+      end
+      end
+      if redis:get('lock_usernametgtg:'..chat_id) and input:match("@") then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+      end
       if input:match("^[#!/][Mm]ute all$") and is_sudo(msg) then
        if redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already on</b>', 1, 'html')
@@ -142,6 +161,12 @@ function tdcli_update_callback(data)
 	  else 
 	  Links = "no"
 	 end
+	 local username = 'lock_usernametgtg:'..chat_id
+	 if redis:get(user) then
+	  user = "yes"
+	  else 
+	  user = "no"
+	 end
          -- @MuteTeam
          local all = 'mute_alltg:'..chat_id
 	 if redis:get(all) then
@@ -150,7 +175,7 @@ function tdcli_update_callback(data)
 	  All = "no"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n\n<b>Mute All : </b><code>'..All..'</code>\n', 1, 'html') -- @MuteTeam
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n</b>\n\n<b>Lock username : </b><code>'..user..'</code>\n<b>Mute All : </b><code>'..All..'</code>\n', 1, 'html') -- @MuteTeam
       end
       if input:match("^[#!/][Ff]wd$") then
         tdcli.forwardMessages(chat_id, chat_id,{[0] = reply_id}, 0)
