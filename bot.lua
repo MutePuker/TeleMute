@@ -7,7 +7,7 @@ tdcli = dofile('tdcli.lua')
 redis = (loadfile "./libs/redis.lua")()
 
 sudo_users = {
-  105616381,
+  238773538,
   0
 }
 
