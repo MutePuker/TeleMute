@@ -180,6 +180,12 @@ function tdcli_update_callback(data)
 	  else 
 	  Links = "no"
 	 end
+	 local edit = 'lock_edittg:'..chat_id
+	 if redis:get(edit) then
+	  edit = "yes"
+	  else 
+	  edit = "no"
+	 end
 	 local username = 'lock_usernametgtg:'..chat_id
 	 if redis:get(user) then
 	  user = "yes"
@@ -194,7 +200,7 @@ function tdcli_update_callback(data)
 	  All = "no"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n</b>\n\n<b>Lock username : </b><code>'..user..'</code>\n\n<b>Mute All : </b><code>'..All..'</code>\n', 1, 'html') -- @MuteTeam
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n<b>Lock Username</b> : '..user..'\n<b>Lock Edit</b> : '..edit..'\n<b>Mute all</b> : '..all..'\n', 1, 'html') -- @MuteTeam
       end
       if input:match("^[#!/][Ff]wd$") then
         tdcli.forwardMessages(chat_id, chat_id,{[0] = reply_id}, 0)
