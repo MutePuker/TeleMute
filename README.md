@@ -15,8 +15,7 @@ Create a bot!
 send ```Your PM``` to @MutePukerBot in telegram
 # Developers
 * [@MutePuker](https://telegram.me/MutePuker) - Shervin
-* [@Hosein_M1](https://telegram.me/Hosein_M1) - Hossein
-
+* [@amirhossein_h_h_h](https://telegram.me/amirhossein_h_h_h) - amirhosein
 # Commands
 ### All Commands
 >[!/]createsuper [group name]
