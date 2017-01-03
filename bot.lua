@@ -3,9 +3,13 @@ package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'
 package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
 
 -- @MuteTeam
-tdcli = dofile('tdcli.lua')
-redis = (loadfile "./libs/redis.lua")()
-
+tdcli = require('tdcli')
+JSON = require('dkjson')
+db = require('redis')
+redis = db.connect('127.0.0.1', 6379)
+serpent = require('serpent')
+serp = require 'serpent'.block
+redis:select(8)
 sudo_users = {
   238773538,
   0
