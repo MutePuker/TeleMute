@@ -215,7 +215,6 @@ function tdcli_update_callback(data)
       if redis:get('lock_tagtg:'..chat_id) and input:match("#") then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
 	  end
-	  end
       if input:match("^[#!/][Mm]ute all$") and is_sudo(msg) then
        if redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already on</b>', 1, 'html')
