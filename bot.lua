@@ -1,8 +1,8 @@
-﻿package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'
+package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'
   .. ';.luarocks/share/lua/5.2/?/init.lua'
 package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
 
--- @MuteTeam
+-- @Ali_Niestani
 tdcli = dofile('tdcli.lua')
 redis = (loadfile "./libs/redis.lua")()
 
@@ -43,7 +43,7 @@ function vardump(value, depth, key)
   elseif type(value)  == 'function' or 
     type(value) == 'thread' or 
     type(value) == 'userdata' or 
-    value == nil then --@MuteTeam
+    value == nil then --@Ali_Niestani
       print(spaces .. tostring(value))
   elseif type(value)  == 'string' then
     print(spaces .. linePrefix .. '"' .. tostring(value) .. '",')
@@ -88,7 +88,7 @@ function tdcli_update_callback(data)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>PONG</b>', 1, 'html')
       end
       if input:match("^[#!/][Ii][Dd]$") then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>SuperGroup ID : </b><code>'..string.sub(chat_id, 5,14)..'</code>\n<b>User ID : </b><code>'..user_id..'</code>\n<b>Channel : </b>@MuteTeam', 1, 'html')
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>SuperGroup ID : </b><code>'..string.sub(chat_id, 5,14)..'</code>\n<b>User ID : </b><code>'..user_id..'</code>\n<b>Channel : </b>@PROB0T', 1, 'html')
       end
 
       if input:match("^[#!/][Pp][Ii][Nn]") and reply_id then
@@ -196,29 +196,10 @@ function tdcli_update_callback(data)
       if redis:get('lock_entg:'..chat_id) and input:match("[A-Z]") then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
 	  end
-	  if input:match("^[#!/][Ll]ock tag$") and is_sudo(msg) then
-       if redis:get('lock_tagtg:'..chat_id) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>tag posting is already locked</b>', 1, 'html')
-       else -- @MuteTeam
-        redis:set('lock_tagtg:'..chat_id, true)
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>tag posting has been locked</b>', 1, 'html')
-      end
-      end 
-      if input:match("^[#!/][Uu]nlock tag$") and is_sudo(msg) then
-       if not redis:get('lock_tagtg:'..chat_id) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>tag posting is not locked</b>', 1, 'html')
-       else
-         redis:del('lock_tagtg:'..chat_id)
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>tag posting has been unlocked</b>', 1, 'html')
-      end
-      end
-      if redis:get('lock_tagtg:'..chat_id) and input:match("#") then
-        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
-	  end
       if input:match("^[#!/][Mm]ute all$") and is_sudo(msg) then
        if redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already on</b>', 1, 'html')
-       else -- @MuteTeam
+       else -- @Ali_Niestani
         redis:set('mute_alltg:'..chat_id, true)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been enabled</b>', 1, 'html')
       end
@@ -226,7 +207,7 @@ function tdcli_update_callback(data)
       if input:match("^[#!/][Uu]nmute all$") and is_sudo(msg) then
        if not redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already disabled</b>', 1, 'html')
-       else -- @MuteTeam
+       else -- @Ali_Niestani
          redis:del('mute_alltg:'..chat_id)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been disabled</b>', 1, 'html')
       end
@@ -237,31 +218,7 @@ function tdcli_update_callback(data)
 	  else 
 	  Links = "no"
 	 end
-	 local english = 'lock_entg:'..chat_id
-	 if redis:get(en) then
-	  en = "yes"
-	  else 
-	  en = "no"
-	 end
-	 local persian = 'lock_fatg:'..chat_id
-	 if redis:get(fa) then
-	  fa = "yes"
-	  else 
-	  fa = "no"
-	 end
-	 local edit = 'lock_edittg:'..chat_id
-	 if redis:get(edit) then
-	  edit = "yes"
-	  else 
-	  edit = "no"
-	 end
-	 local username = 'lock_usernametgtg:'..chat_id
-	 if redis:get(user) then
-	  user = "yes"
-	  else 
-	  user = "no"
-	 end
-         -- @MuteTeam
+         -- @Ali_Niestani
          local all = 'mute_alltg:'..chat_id
 	 if redis:get(all) then
 	  All = "yes"
@@ -269,7 +226,7 @@ function tdcli_update_callback(data)
 	  All = "no"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n<b>Lock Username</b> : '..user..'\n<b>Lock Edit</b> : '..edit..'\n<b>Mute all</b> : '..all..'\n', 1, 'html') -- @MuteTeam
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n\n<b>Mute All : </b><code>'..All..'</code>\n', 1, 'html') -- @Ali_Niestani
       end
       if input:match("^[#!/][Ff]wd$") then
         tdcli.forwardMessages(chat_id, chat_id,{[0] = reply_id}, 0)
@@ -313,7 +270,6 @@ function tdcli_update_callback(data)
 
    if redis:get('mute_alltg:'..chat_id) and msg then
      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
-   end
    end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
