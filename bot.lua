@@ -268,6 +268,12 @@ function tdcli_update_callback(data)
 	  else 
 	  All = "no"
 	 end
+	 local photo = 'mute_phototg:'..chat_id
+	 if redis:get(photo) then
+	  photo = "yes"
+	  else 
+	  photo = "no"
+	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n<b>Lock Username</b> : '..user..'\n<b>Lock Edit</b> : '..edit..'\n<b>Mute all</b> : '..all..'\n', 1, 'html') -- @MuteTeam
       end
