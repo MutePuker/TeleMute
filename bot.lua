@@ -212,6 +212,25 @@ function tdcli_update_callback(data)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been disabled</b>', 1, 'html')
       end
       end
+	  if input:match("^[#!/][M]ute photo$") and is_sudo(msg) then
+       if redis:get('mute_phototg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo is already locked</b>', 1, 'html')
+       else -- @MuteTeam
+        redis:set('mute_phototg:'..chat_id, true)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo has been locked</b>', 1, 'html')
+      end
+      end 
+      if input:match("^[#!/][Uu]nmute photo$") and is_sudo(msg) then
+       if not redis:get('mute_phototg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>eMute Photo is not locked</b>', 1, 'html')
+       else
+         redis:del('mute_phototg:'..chat_id)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo has been unlocked</b>', 1, 'html')
+      end
+      end
+	  if redis:get('lock_entg:'..chat_id) and input:match("!!!photo:") then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+	  end
          local links = 'lock_linkstg:'..chat_id
 	 if redis:get(links) then
 	  Links = "yes"
