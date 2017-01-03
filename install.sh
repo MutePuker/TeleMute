@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 wget "https://valtman.name/files/telegram-cli-1222"
-mv telegram-cli-1122 tg
+mv telegram-cli-1222 tg
 chmod 777 tg
 chmod 777 launch.sh
 RED='\033[0;31m'
