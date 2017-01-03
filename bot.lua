@@ -2,7 +2,7 @@ package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'
   .. ';.luarocks/share/lua/5.2/?/init.lua'
 package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
 
--- @Ali_Niestani
+-- @MuteTeam
 tdcli = dofile('tdcli.lua')
 redis = (loadfile "./libs/redis.lua")()
 
@@ -43,7 +43,7 @@ function vardump(value, depth, key)
   elseif type(value)  == 'function' or 
     type(value) == 'thread' or 
     type(value) == 'userdata' or 
-    value == nil then --@Ali_Niestani
+    value == nil then --@MuteTeam
       print(spaces .. tostring(value))
   elseif type(value)  == 'string' then
     print(spaces .. linePrefix .. '"' .. tostring(value) .. '",')
@@ -199,7 +199,7 @@ function tdcli_update_callback(data)
       if input:match("^[#!/][Mm]ute all$") and is_sudo(msg) then
        if redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already on</b>', 1, 'html')
-       else -- @Ali_Niestani
+       else -- @MuteTeam
         redis:set('mute_alltg:'..chat_id, true)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been enabled</b>', 1, 'html')
       end
@@ -207,7 +207,7 @@ function tdcli_update_callback(data)
       if input:match("^[#!/][Uu]nmute all$") and is_sudo(msg) then
        if not redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already disabled</b>', 1, 'html')
-       else -- @Ali_Niestani
+       else -- @MuteTeam
          redis:del('mute_alltg:'..chat_id)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been disabled</b>', 1, 'html')
       end
@@ -218,7 +218,7 @@ function tdcli_update_callback(data)
 	  else 
 	  Links = "no"
 	 end
-         -- @Ali_Niestani
+         -- @MuteTeam
          local all = 'mute_alltg:'..chat_id
 	 if redis:get(all) then
 	  All = "yes"
@@ -226,7 +226,7 @@ function tdcli_update_callback(data)
 	  All = "no"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n\n<b>Mute All : </b><code>'..All..'</code>\n', 1, 'html') -- @Ali_Niestani
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n\n<b>Mute All : </b><code>'..All..'</code>\n', 1, 'html') -- @MuteTeam
       end
       if input:match("^[#!/][Ff]wd$") then
         tdcli.forwardMessages(chat_id, chat_id,{[0] = reply_id}, 0)
@@ -273,7 +273,7 @@ function tdcli_update_callback(data)
    end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
-    -- @Ali_Niestani
+    -- @MuteTeam
     tdcli_function ({
       ID="GetChats",
       offset_order_="9223372036854775807",
