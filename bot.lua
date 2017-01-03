@@ -264,6 +264,10 @@ function tdcli_update_callback(data)
         tdcli.changeChatTitle(chat_id, string.sub(input, 10), 1)
          tdcli.sendMessage(chat_id, msg.id_, 1,'<b>SuperGroup Name Changed To </b><code>'..string.sub(input, 10)..'</code>', 1, 'html')
       end
+	  if input:match("^[#!/][Ii]mport") then
+        tdcli.importChatInviteLink('https://telegram.me/joinchat/'string.sub)
+         tdcli.sendMessage(chat_id, msg.id_, 1,'#Done\nBot has been joined . . .', 1, 'html')
+      end
 	  if input:match("^[#!/][Cc]hangename") and is_sudo(msg) then
         tdcli.changeName(string.sub(input, 13), nil, 1)
          tdcli.sendMessage(chat_id, msg.id_, 1,'<b>Bot Name Changed To </b><code>'..string.sub(input, 13)..'</code>', 1, 'html')
