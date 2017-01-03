@@ -276,6 +276,11 @@ function tdcli_update_callback(data)
         tdcli.editMessageText(chat_id, reply_id, nil, string.sub(input, 7), 'html')
       end
 
+	  if input:match("^[#!/]delpro") then
+        tdcli.DeleteProfilePhoto(chat_id, {[0] = msg.id_})
+        tdcli.sendMessage(chat_id, msg.id_, 1,'<b>#done profile has been deleted</b>', 1, 'html')
+      end
+	  
       if input:match("^[#!/][Ii]nvite") and is_sudo(msg) then
         tdcli.addChatMember(chat_id, string.sub(input, 9), 20)
       end
