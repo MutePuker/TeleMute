@@ -216,28 +216,32 @@ function tdcli_update_callback(data)
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
 	  end
 	  end
+	  if input:match("^[#!/][Ll]ock number$") and is_sudo(msg) then
+       if redis:get('lock_numtg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Number posting is already locked</b>', 1, 'html')
+       else -- @MuteTeam
+        redis:set('lock_numtg:'..chat_id, true)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Number posting has been locked</b>', 1, 'html')
+      end
+      end 
+      if input:match("^[#!/][Uu]nlock number$") and is_sudo(msg) then
+       if not redis:get('lock_numtg:'..chat_id) then
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Number posting is not locked</b>', 1, 'html')
+       else
+         redis:del('lock_numtg:'..chat_id)
+        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Number posting has been unlocked</b>', 1, 'html')
+      end
+      end
+      if redis:get('lock_numtg:'..chat_id) and input:match("[1-9999]") then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+	  end
+	  end
       if input:match("^[#!/][Mm]ute all$") and is_sudo(msg) then
        if redis:get('mute_alltg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All is already on</b>', 1, 'html')
        else -- @MuteTeam
         redis:set('mute_alltg:'..chat_id, true)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been enabled</b>', 1, 'html')
-      end
-      end
-	  if input:match("^[#!/][Ll]ock forward$") and is_sudo(msg) then
-       if redis:get('lock_fwdtg:'..chat_id) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>forward posting is already locked</b>', 1, 'html')
-       else -- @MuteTeam
-        redis:set('lock_fwdtg:'..chat_id, true)
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>forward posting has been locked</b>', 1, 'html')
-      end
-      end 
-      if input:match("^[#!/][Uu]nlock forward$") and is_sudo(msg) then
-       if not redis:get('lock_fwdtg:'..chat_id) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>forward posting is not locked</b>', 1, 'html')
-       else
-         redis:del('lock_fwdtg:'..chat_id)
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>forward posting has been unlocked</b>', 1, 'html')
       end
       end
       if input:match("^[#!/][Uu]nmute all$") and is_sudo(msg) then
@@ -366,9 +370,6 @@ end
    if redis:get('mute_alltg:'..chat_id) and msg then
      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
    end
-   if redis:get('lock_fwdtg:'..chat_id) and msg.forward_info_ then
-        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
-	  end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
     -- @MuteTeam
