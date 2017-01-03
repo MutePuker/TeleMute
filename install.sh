@@ -25,10 +25,7 @@ sudo apt-get install libjansson-dev
 sudo apt-get install libpython-dev 
 sudo apt-get install expat libexpat1-dev 
 sudo apt-get install ppa-purge 
-sudo apt-get install python3-pip 
-sudo apt-get install python3-dev
 sudo apt-get install software-properties-common
-sudo apt-get install python-software-properties
 sudo apt-get install gcc-6
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt-get update
