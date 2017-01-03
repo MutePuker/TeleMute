@@ -256,11 +256,6 @@ function tdcli_update_callback(data)
          tdcli.sendMessage(chat_id, msg.id_, 1,'<b>Username Changed To </b>@'..string.sub(input, 11), 1, 'html')
       end
 	  
-	  if input:match("^[#!/][Bb]lock$") then
-        tdcli.blockUser(id)
-		tdcli.sendMessage(chat_id, msg.id_, 1,'<b>user has been blocked</b>', 1, 'html')
-      end
-
       if input:match("^[#!/][Ee]cho") then
         tdcli.sendMessage(chat_id, msg.id_, 1, string.sub(input, 7), 1, 'html')
       end
