@@ -212,7 +212,7 @@ function tdcli_update_callback(data)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been disabled</b>', 1, 'html')
       end
       end
-	  if input:match("^[#!/][M]ute photo$") and is_sudo(msg) then
+	  if input:match("^[#!/][Mm]ute photo$") and is_sudo(msg) then
        if redis:get('mute_phototg:'..chat_id) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo is already locked</b>', 1, 'html')
        else -- @MuteTeam
