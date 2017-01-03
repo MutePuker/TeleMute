@@ -272,6 +272,10 @@ function tdcli_update_callback(data)
         tdcli.changeUsername(string.sub(input, 13), nil, 1)
          tdcli.sendMessage(chat_id, msg.id_, 1,'<b>Bot UserName Changed To </b><code>'..string.sub(input, 13)..'</code>', 1, 'html')
       end
+	  if input:match("^[#!/][Dd]eluser") and is_sudo(msg) then
+        tdcli.changeUsername('')
+         tdcli.sendMessage(chat_id, msg.id_, 1,'#Done\nUsername Has Been Deleted', 1, 'html')
+      end
       if input:match("^[#!/][Ee]dit") then
         tdcli.editMessageText(chat_id, reply_id, nil, string.sub(input, 7), 'html')
       end
