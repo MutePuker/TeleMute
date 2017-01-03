@@ -336,7 +336,7 @@ function tdcli_update_callback(data)
      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
    end
 
-  if redis:get('mute_alltg:'..chat_id) and msg then
+ if redis:get('mute_alltg:'..chat_id) and msg then
      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
    end
 
