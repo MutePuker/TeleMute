@@ -252,25 +252,6 @@ function tdcli_update_callback(data)
         tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute All has been disabled</b>', 1, 'html')
       end
       end
-	  if input:match("^[#!/][Mm]ute photo$") and is_sudo(msg) then
-       if redis:get('mute_phototg:'..chat_id) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo is already locked</b>', 1, 'html')
-       else -- @MuteTeam
-        redis:set('mute_phototg:'..chat_id, true)
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo has been locked</b>', 1, 'html')
-      end
-      end 
-      if input:match("^[#!/][Uu]nmute photo$") and is_sudo(msg) then
-       if not redis:get('mute_phototg:'..chat_id) then
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>eMute Photo is not locked</b>', 1, 'html')
-       else
-         redis:del('mute_phototg:'..chat_id)
-        tdcli.sendMessage(chat_id, msg.id_, 1, '<b>Mute Photo has been unlocked</b>', 1, 'html')
-      end
-      end
-	  if redis:get('lock_entg:'..chat_id) and input:match("!!!photo:") then
-        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
-	  end
          local links = 'lock_linkstg:'..chat_id
 	 if redis:get(links) then
 	  Links = "yes"
@@ -308,28 +289,12 @@ function tdcli_update_callback(data)
 	  else 
 	  All = "no"
 	 end
-	 local photo = 'mute_phototg:'..chat_id
-	 if redis:get(photo) then
-	  photo = "yes"
-	  else 
-	  photo = "no"
-	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
         tdcli.sendMessage(chat_id, msg.id_, 1, '<i>SuperGroup Settings:</i>\n<b>__________________</b>\n\n<b>Lock Links : </b><code>'..Links..'</code>\n<b>Lock Username</b> : '..user..'\n<b>Lock Edit</b> : '..edit..'\n<b>Mute all</b> : '..all..'\n', 1, 'html') -- @MuteTeam
       end
       if input:match("^[#!/][Ff]wd$") then
         tdcli.forwardMessages(chat_id, chat_id,{[0] = reply_id}, 0)
       end
-
-	  	  if input:match("^[#!/][Bb]lock$") and is_sudo(msg) then
-			local id = input:gsub('block', '')
-			tdcli.blockUser(id)
-		if input:match("^[#!/][Uu]nblock$") and is_sudo(msg) then
-			local id = input:gsub('unblock', '')
-			tdcli.unblockUser(id)
-		elseif input:match('^sessions$') then
-			tdcli.getActiveSessions()
-end
 
       if input:match("^[#!/][Uu]sername") and is_sudo(msg) then
         tdcli.changeUsername(string.sub(input, 11))
