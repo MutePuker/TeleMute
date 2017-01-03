@@ -12,11 +12,12 @@ serp = require 'serpent'.block
 redis:select(8)
 sudo_users = {
   238773538,
-  173606679
+  173606679,
+	0
 }
 
 -- Print message format. Use serpent for prettier result.
---[[function vardump(value, depth, key)
+function vardump(value, depth, key)
   local linePrefix = ''
   local spaces = ''
 
@@ -60,7 +61,7 @@ end
 function dl_cb(arg, data)
   vardump(arg)
   vardump(data)
-end]]
+end
 
 function is_sudo(msg)
   local var = false
@@ -75,7 +76,7 @@ end
 
 
 function tdcli_update_callback(data)
---  vardump(data)
+  vardump(data)
 
   if (data.ID == "UpdateNewMessage") then
     local msg = data.message_
@@ -83,7 +84,7 @@ function tdcli_update_callback(data)
     local chat_id = msg.chat_id_
     local user_id = msg.sender_user_id_
     local reply_id = msg.reply_to_message_id_
-  --  vardump(msg)
+    vardump(msg)
     if msg.content_.ID == "MessageText" then
       if input == "ping" then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '`pong`', 1, 'md')
