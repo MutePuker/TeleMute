@@ -3,6 +3,8 @@ wget "https://valtman.name/files/telegram-cli-1215"
 mv telegram-cli-1215 tg
 sudo apt-get install libreadline-dev
 sudo apt install libreadline-dev 
+sudo apt-get update; sudo apt-get upgrade -y —force-yes; sudo apt-get dist-upgrade -y —force-yes; sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev libevent-dev libjansson* libpython-dev make autoconf unzip git redis-server g++ -y —force-yes
+sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev libevent-dev make autoconf unzip git redis-server g++ libjansson-dev libpython-dev expat libexpat1-de
 sudo apt-get install libreadline6 
 sudo apt-get install libreadline6-dev
 sudo apt-get install libconfig-dev 
