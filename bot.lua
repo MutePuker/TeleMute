@@ -250,6 +250,11 @@ function tdcli_update_callback(data)
       if input:match("^[#!/][Ff]wd$") then
         tdcli.forwardMessages(chat_id, chat_id,{[0] = reply_id}, 0)
       end
+	  
+	  if input:match("^[#!/]link") then
+       tdcli.exportChatInviteLink(msg.chat_id_)
+        tdcli.sendMessage(msg.chat_id_, 17, 0, 1, nil, msg.invite_link_, 1, 'html')
+      end
 
       if input:match("^[#!/][Uu]sername") and is_sudo(msg) then
         tdcli.changeUsername(string.sub(input, 11))
