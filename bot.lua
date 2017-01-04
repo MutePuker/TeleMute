@@ -92,20 +92,16 @@ function tdcli_update_callback(data)
 	  tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup ID : </b><code>'..string.sub(chat_id, 5,14)..'</code>\n<b>User ID : </b><code>'..user_id..'</code>\n<b>Channel : </b>@MuteTeam', 1, 'html')
       end
 
-      if input:match("^[#!/][Pp][Ii][Nn]") and reply_id then
+      if input:match("^[#!/][Pp][Ii][Nn]$") and reply_id then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Message Pinned</b>', 1, 'html')
         tdcli.pinChannelMessage(chat_id, reply_id, 1)
       end
 
-      if input:match("^[#!/][Uu][Nn][Pp][Ii][Nn]") and reply_id then
+      if input:match("^[#!/][Uu][Nn][Pp][Ii][Nn]$") and reply_id then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Message UnPinned</b>', 1, 'html')
         tdcli.unpinChannelMessage(chat_id, reply_id, 1)
       end
 	  
-	  if input:match("^[#!/][Bb][Ll][Oo][Cc][Kk]") and reply_id then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ User Has Been Blocked', 1, 'html')
-        tdcli.BlockUser(chat_id, reply_id, 1)
-      end
 
       		-----------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------
