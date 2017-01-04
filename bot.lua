@@ -259,6 +259,23 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEdit Has Been UnLocked', 1, 'md')
       end
       end
+	  --- lock location
+	  if input:match("^lock location$") and is_sudo(msg) and groups then
+       if redis:get('locatg:'..chat_id) then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Location is already Locked', 1, 'md')
+       else 
+        redis:set('locatg:'..chat_id, true)
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nLocation Has Been Locked', 1, 'md')
+      end
+      end 
+      if input:match("^unlock location$") and is_sudo(msg) and groups then
+       if not redis:get('locatg:'..chat_id) then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Location is already Not Locked', 1, 'md')
+       else
+         redis:del('locatg:'..chat_id)
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nLocation Has Been UnLocked', 1, 'md')
+      end
+      end
 	  --lock emoji
 	  groups = redis:sismember('groups',chat_id)
 	  if input:match("^lock emoji") and is_sudo(msg) and groups then
@@ -765,6 +782,10 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
 		end
 		
 	  if redis:get('captg:'..chat_id) and  msg.content_.caption_ then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+      end
+	  
+	  if redis:get('locatg:'..chat_id) and  msg.content_.location_ then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
 
