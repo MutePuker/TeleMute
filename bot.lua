@@ -612,28 +612,28 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 	  text1 = "no"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
-		local text = "`Super Group Settings`".."\n"
-		.."_Lock Link: _".."*"..link.."*".."\n"
-		.."_Lock Tag: _".."*"..tag.."*".."\n"
-		.."_Lock Username: _".."*"..username.."*".."\n"
-		.."_Lock Forward: _".."*"..forward.."*".."\n"
-		.."_Lock Arabic/Persian: _".."*"..arabic..'*'..'\n'
-		.."_Lock English: _".."*"..eng..'*'..'\n'
-		.."_Lock Fosh: _".."*"..badword..'*'..'\n'
-		.."_Lock Edit: _".."*"..edit..'*'..'\n'
-		.."_Lock Emoji: _".."*"..emoji..'*'..'\n'
+		local text = "👥 SuperGroup Settings :".."\n"
+		.."*Lock Link: *".."`"..link.."`".."\n"
+		.."*Lock Tag: *".."`"..tag.."`".."\n"
+		.."*Lock Username: *".."`"..username.."`".."\n"
+		.."*Lock Forward: *".."`"..forward.."`".."\n"
+		.."*Lock Arabic/Persian: *".."`"..arabic..'`'..'\n'
+		.."*Lock English: *".."`"..eng..'`'..'\n'
+		.."*Lock Fosh: *".."`"..badword..'`'..'\n'
+		.."*Lock Edit: *".."`"..edit..'`'..'\n'
+		.."*Lock Emoji: *".."`"..emoji..'`'..'\n'
 		.."*➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖*".."\n"
-		.."`Mute List`".."\n"
-		.."\n".."*Mute All: *".."_"..All.."_".."\n"
-		.."*Mute Sticker: *".."_"..sticker.."_".."\n"
-		.."*Mute Gift: *".."_"..gift.."_".."\n"
-		.."*Mute Contact: *".."_"..contact.."_".."\n"
-		.."*Mute Photo: *".."_"..photo.."_".."\n"
-		.."*Mute Audio: *".."_"..audio.."_".."\n"
-		.."*Mute Voice: *".."_"..voice.."_".."\n"
-		.."*Mute Video: *".."_"..video.."_".."\n"
-		.."*Mute Document: *".."_"..document.."_".."\n"
-		.."*Mute Text: *".."_"..text1.."_".."\n"
+		.."🗣 Mute List :".."\n"
+		.."\n".."*Mute All: *".."`"..All.."`".."\n"
+		.."*Mute Sticker: *".."`"..sticker.."`".."\n"
+		.."*Mute Gift: *".."`"..gift.."`".."\n"
+		.."*Mute Contact: *".."`"..contact.."`".."\n"
+		.."*Mute Photo: *".."`"..photo.."`".."\n"
+		.."*Mute Audio: *".."`"..audio.."`".."\n"
+		.."*Mute Voice: *".."`"..voice.."`".."\n"
+		.."*Mute Video: *".."`"..video.."`".."\n"
+		.."*Mute Document: *".."`"..document.."`".."\n"
+		.."*Mute Text: *".."`"..text1.."`".."\n"
 		.."*Mute Team*"
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
 		end
