@@ -633,7 +633,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		local text = "👥 SuperGroup Settings :".."\n"
 		.."*Lock Link => *".."`"..link.."`".."\n"
 		.."*Lock Tag => *".."`"..tag.."`".."\n"
-		.."*Lock Username: *".."`"..username.."`".."\n"
+		.."*Lock Username => *".."`"..username.."`".."\n"
 		.."*Lock Forward => *".."`"..forward.."`".."\n"
 		.."*Lock Arabic/Persian => *".."`"..arabic..'`'..'\n'
 		.."*Lock English => *".."`"..eng..'`'..'\n'
