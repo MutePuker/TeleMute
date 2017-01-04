@@ -106,7 +106,7 @@ function tdcli_update_callback(data)
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
 		 redis:sadd('groups',chat_id)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Group Hadd Been Addet!*', 1, 'md')
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Group Hadd Been Added!*', 1, 'md')
 		end
 		-------------------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Rr]em$") and is_sudo(msg) then
@@ -122,7 +122,7 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Links is already Locked_', 1, 'md')
        else 
         redis:set('lock_linkstg:'..chat_id, true)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '_لینک قفل شد_', 1, 'md')
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Links Has Been Locked', 1, 'md')
       end
       end 
       if input:match("^unlock links$")  and is_sudo(msg) and groups then
@@ -173,7 +173,7 @@ groups = redis:sismember('groups',chat_id)
 	  groups = redis:sismember('groups',chat_id)
 	  if input:match("^lock forward$") and is_sudo(msg) and groups then
        if redis:get('forwardtg:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Forward is already Not Locked', 1, 'md')
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Forward is already Locked', 1, 'md')
        else 
         redis:set('forwardtg:'..chat_id, true)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nForward Has Been Locked', 1, 'md')
@@ -215,7 +215,7 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEnglish Has Been Locked', 1, 'md')
       end
       end 
-      if input:match("^بازکردن انگلیسی$") and is_sudo(msg) and groups then
+      if input:match("^unlock english$") and is_sudo(msg) and groups then
        if not redis:get('engtg:'..chat_id) then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 English is already Not Locked', 1, 'md')
        else
@@ -225,7 +225,7 @@ groups = redis:sismember('groups',chat_id)
       end
 	  --lock foshtg
 	  groups = redis:sismember('groups',chat_id)
-	  if input:match("^قفل فحش$") and is_sudo(msg) and groups then
+	  if input:match("^lock fosh$") and is_sudo(msg) and groups then
        if redis:get('badwordtg:'..chat_id) then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Fosh is already Locked', 1, 'md')
        else 
@@ -233,7 +233,7 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nFosh Has Been Locked', 1, 'md')
       end
       end 
-      if input:match("^بازکردن فحش$") and is_sudo(msg) and groups then
+      if input:match("^unlock fosh$") and is_sudo(msg) and groups then
        if not redis:get('badwordtg:'..chat_id) then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Fosh is already Not Locked', 1, 'md')
        else
@@ -251,7 +251,7 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEdit Has Been Locked', 1, 'md')
       end
       end 
-      if input:match("^بازکردن ویرایش$") and is_sudo(msg) and groups then
+      if input:match("^unlock edit$") and is_sudo(msg) and groups then
        if not redis:get('edittg:'..chat_id) then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Edit is already Not Locked', 1, 'md')
        else
