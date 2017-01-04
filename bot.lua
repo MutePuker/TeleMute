@@ -101,6 +101,11 @@ function tdcli_update_callback(data)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Message UnPinned</b>', 1, 'html')
         tdcli.unpinChannelMessage(chat_id, reply_id, 1)
       end
+	  
+	  if input:match("^[#!/][Bb][Ll][Oo][Cc][Kk]") and reply_id then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ User Has Been Blocked', 1, 'html')
+        tdcli.BlockUser(chat_id, reply_id, 1)
+      end
 
       		-----------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------
