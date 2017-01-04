@@ -631,27 +631,27 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
 		local text = "👥 SuperGroup Settings :".."\n"
-		.."*Lock Link: *".."`"..link.."`".."\n"
-		.."*Lock Tag: *".."`"..tag.."`".."\n"
+		.."*Lock Link => *".."`"..link.."`".."\n"
+		.."*Lock Tag => *".."`"..tag.."`".."\n"
 		.."*Lock Username: *".."`"..username.."`".."\n"
-		.."*Lock Forward: *".."`"..forward.."`".."\n"
-		.."*Lock Arabic/Persian: *".."`"..arabic..'`'..'\n'
-		.."*Lock English: *".."`"..eng..'`'..'\n'
-		.."*Lock Fosh: *".."`"..badword..'`'..'\n'
-		.."*Lock Edit: *".."`"..edit..'`'..'\n'
-		.."*Lock Emoji: *".."`"..emoji..'`'..'\n'
+		.."*Lock Forward => *".."`"..forward.."`".."\n"
+		.."*Lock Arabic/Persian => *".."`"..arabic..'`'..'\n'
+		.."*Lock English => *".."`"..eng..'`'..'\n'
+		.."*Lock Fosh => *".."`"..badword..'`'..'\n'
+		.."*Lock Edit => *".."`"..edit..'`'..'\n'
+		.."*Lock Emoji => *".."`"..emoji..'`'..'\n'
 		.."*➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖*".."\n"
 		.."🗣 Mute List :".."\n"
-		.."*Mute All: *".."`"..All.."`".."\n"
-		.."*Mute Sticker: *".."`"..sticker.."`".."\n"
-		.."*Mute Gift: *".."`"..gift.."`".."\n"
-		.."*Mute Contact: *".."`"..contact.."`".."\n"
-		.."*Mute Photo: *".."`"..photo.."`".."\n"
-		.."*Mute Audio: *".."`"..audio.."`".."\n"
-		.."*Mute Voice: *".."`"..voice.."`".."\n"
-		.."*Mute Video: *".."`"..video.."`".."\n"
-		.."*Mute Document: *".."`"..document.."`".."\n"
-		.."*Mute Text: *".."`"..text1.."`".."\n"
+		.."*Mute All : *".."`"..All.."`".."\n"
+		.."*Mute Sticker : *".."`"..sticker.."`".."\n"
+		.."*Mute Gift : *".."`"..gift.."`".."\n"
+		.."*Mute Contact : *".."`"..contact.."`".."\n"
+		.."*Mute Photo : *".."`"..photo.."`".."\n"
+		.."*Mute Audio : *".."`"..audio.."`".."\n"
+		.."*Mute Voice : *".."`"..voice.."`".."\n"
+		.."*Mute Video : *".."`"..video.."`".."\n"
+		.."*Mute Document : *".."`"..document.."`".."\n"
+		.."*Mute Text : *".."`"..text1.."`".."\n"
 		.."*Mute Team*"
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
 		end
