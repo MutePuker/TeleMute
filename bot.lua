@@ -317,65 +317,65 @@ groups = redis:sismember('groups',chat_id)
 	  -----------------------------------------------------------------------------------------------------------------
 local link = 'lock_linkstg:'..chat_id
 	 if redis:get(link) then
-	  link = "yes"
+	  link = "`Enable`"
 	  else 
-	  link = "no"
+	  link = "`Disable`"
 	 end
 	 
 	 local username = 'usernametg:'..chat_id
 	 if redis:get(username) then
-	  username = "yes"
+	  username = "`Enable`"
 	  else 
-	  username = "no"
+	  username = "`Disable`"
 	 end
 	 
 	 local tag = 'tagtg:'..chat_id
 	 if redis:get(tag) then
-	  tag = "yes"
+	  tag = "`Enable`"
 	  else 
-	  tag = "no"
+	  tag = "`Disable`"
 	 end
 	 
 	 local forward = 'forwardtg:'..chat_id
 	 if redis:get(forward) then
-	  forward = "yes"
+	  forward = "`Enable`"
 	  else 
-	  forward = "no"
+	  forward = "`Disable`"
 	 end
 	 
 	 local arabic = 'arabictg:'..chat_id
 	 if redis:get(arabic) then
-	  arabic = "yes"
+	  arabic = "`Enable`"
 	  else 
-	  arabic = "no"
+	  arabic = "`Disable`"
 	 end
 	 
 	 local eng = 'engtg:'..chat_id
 	 if redis:get(eng) then
-	  eng = "yes"
+	  eng = "`Enable`"
 	  else 
-	  eng = "no"
+	  eng = "`Disable`"
 	 end
 	 
 	 local badword = 'badwordtg:'..chat_id
 	 if redis:get(badword) then
-	  badword = "yes"
+	  badword = "`Enable`"
 	  else 
-	  badword = "no"
+	  badword = "`Disable`"
 	 end
 	 
 	 local edit = 'edittg:'..chat_id
 	 if redis:get(edit) then
-	  edit = "yes"
+	  edit = "`Enable`"
 	  else 
-	  edit = "no"
+	  edit = "`Disable`"
 	 end
 	 
 	 local emoji = 'emojitg:'..chat_id
 	 if redis:get(emoji) then
-	  emoji = "yes"
+	  emoji = "`Enable`"
 	  else 
-	  emoji = "no"
+	  emoji = "`Disable`"
 	 end
 	 ----------------------------
 		--muteall
@@ -562,72 +562,72 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		--settings
 		local all = 'mute_alltg:'..chat_id
 	 if redis:get(all) then
-	  All = "yes"
+	  All = "✅"
 	  else 
-	  All = "no"
+	  All = "🚫"
 	 end
 	 
 	 local sticker = 'mute_stickertg:'..chat_id
 	 if redis:get(sticker) then
-	  sticker = "yes"
+	  sticker = "✅"
 	  else 
-	  sticker = "no"
+	  sticker = "🚫"
 	 end
 	 
 	 local gift = 'mute_gifttg:'..chat_id
 	 if redis:get(gift) then
-	  gift = "yes"
+	  gift = "✅"
 	  else 
-	  gift = "no"
+	  gift = "🚫"
 	 end
 	 
 	 local contact = 'mute_contacttg:'..chat_id
 	 if redis:get(contact) then
-	  contact = "yes"
+	  contact = "✅"
 	  else 
-	  contact = "no"
+	  contact = "🚫"
 	 end
 	 
 	 local photo = 'mute_phototg:'..chat_id
 	 if redis:get(photo) then
-	  photo = "yes"
+	  photo = "✅"
 	  else 
-	  photo = "no"
+	  photo = "🚫"
 	 end
 	 
 	 local audio = 'mute_audiotg:'..chat_id
 	 if redis:get(audio) then
-	  audio = "yes"
+	  audio = "✅"
 	  else 
-	  audio = "no"
+	  audio = "🚫"
 	 end
 	 
 	 local voice = 'mute_voicetg:'..chat_id
 	 if redis:get(voice) then
-	  voice = "yes"
+	  voice = "✅"
 	  else 
-	  voice = "no"
+	  voice = "🚫"
 	 end
 	 
 	 local video = 'mute_videotg:'..chat_id
 	 if redis:get(video) then
-	  video = "yes"
+	  video = "✅"
 	  else 
-	  video = "no"
+	  video = "🚫"
 	 end
 	 
 	 local document = 'mute_documenttg:'..chat_id
 	 if redis:get(document) then
-	  document = "yes"
+	  document = "✅"
 	  else 
-	  document = "no"
+	  document = "🚫"
 	 end
 	 
 	 local text1 = 'mute_texttg:'..chat_id
 	 if redis:get(text1) then
-	  text1 = "yes"
+	  text1 = "✅"
 	  else 
-	  text1 = "no"
+	  text1 = "🚫"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
 		local text = "👥 SuperGroup Settings :".."\n"
