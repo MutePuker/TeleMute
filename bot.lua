@@ -624,7 +624,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		.."*Lock Emoji: *".."`"..emoji..'`'..'\n'
 		.."*➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖*".."\n"
 		.."🗣 Mute List :".."\n"
-		..".."*Mute All: *".."`"..All.."`".."\n"
+		.."*Mute All: *".."`"..All.."`".."\n"
 		.."*Mute Sticker: *".."`"..sticker.."`".."\n"
 		.."*Mute Gift: *".."`"..gift.."`".."\n"
 		.."*Mute Contact: *".."`"..contact.."`".."\n"
