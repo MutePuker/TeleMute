@@ -313,22 +313,6 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'âœ… #Done\nTGservice Has Been UnLocked', 1, 'md')
       end
       end
-	  if input:match("^!!!edit:[#!/][Ll]ock tgservice$") and is_sudo(msg) and groups then
-       if redis:get('tgservice:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'ًںڑ« TGservice is already Locked', 1, 'md')
-       else 
-        redis:set('tgservice:'..chat_id, true)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'âœ… #Done\nTGservice Has Been Locked', 1, 'md')
-      end
-      end 
-      if input:match("^!!!edit:[#!/][Uu]nlock tgservice$") and is_sudo(msg) and groups then
-       if not redis:get('tgservice:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'ًںڑ« TGservice is already Not Locked', 1, 'md')
-       else
-         redis:del('tgservice:'..chat_id)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'âœ… #Done\nTGservice Has Been UnLocked', 1, 'md')
-      end
-      end
 	  
 	  -----------------------------------------------------------------------------------------------------------------
 local link = 'lock_linkstg:'..chat_id
