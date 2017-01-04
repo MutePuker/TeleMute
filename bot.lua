@@ -260,21 +260,21 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEdit Has Been UnLocked', 1, 'md')
       end
       end
-	  --- lock location
-	  if input:match("^[#!/]lock location$") and is_sudo(msg) and groups then
-       if redis:get('locatg:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Location is already Locked', 1, 'md')
+	  --- lock Caption
+	  if input:match("^[#!/]lock caption$") and is_sudo(msg) and groups then
+       if redis:get('captg:'..chat_id) then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Caption is already Locked', 1, 'md')
        else 
-        redis:set('locatg:'..chat_id, true)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nLocation Has Been Locked', 1, 'md')
+        redis:set('captg:'..chat_id, true)
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nCaption Has Been Locked', 1, 'md')
       end
       end 
-      if input:match("^[#!/]unlock location$") and is_sudo(msg) and groups then
-       if not redis:get('locatg:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Location is already Not Locked', 1, 'md')
+      if input:match("^[#!/]unlock caption$") and is_sudo(msg) and groups then
+       if not redis:get('captg:'..chat_id) then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Caption is already Not Locked', 1, 'md')
        else
-         redis:del('locatg:'..chat_id)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nLocation Has Been UnLocked', 1, 'md')
+         redis:del('captg:'..chat_id)
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nCaption Has Been UnLocked', 1, 'md')
       end
       end
 	  --lock emoji
@@ -376,6 +376,13 @@ local link = 'lock_linkstg:'..chat_id
 	  emoji = "`Enable`"
 	  else 
 	  emoji = "`Disable`"
+	 end
+	 
+	 local caption = 'captg:'..chat_id
+	 if redis:get(caption) then
+	  caption = "`Enable`"
+	  else 
+	  caption = "`Disable`"
 	 end
 	 ----------------------------
 		--muteall
@@ -639,6 +646,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		.."*Lock English => *".."`"..eng..'`'..'\n'
 		.."*Lock Fosh => *".."`"..badword..'`'..'\n'
 		.."*Lock Edit => *".."`"..edit..'`'..'\n'
+		.."*Lock Caption => *".."`"..caption..'`'..'\n'
 		.."*Lock Emoji => *".."`"..emoji..'`'..'\n'
 		.."*➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖*".."\n"
 		.."🗣 Mute List :".."\n"
