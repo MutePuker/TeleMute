@@ -562,72 +562,72 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		--settings
 		local all = 'mute_alltg:'..chat_id
 	 if redis:get(all) then
-	  All = "✅"
+	  All = "`Mute`"
 	  else 
-	  All = "🚫"
+	  All = "`UnMute`"
 	 end
 	 
 	 local sticker = 'mute_stickertg:'..chat_id
 	 if redis:get(sticker) then
-	  sticker = "✅"
+	  sticker = "`Mute`"
 	  else 
-	  sticker = "🚫"
+	  sticker = "`UnMute`"
 	 end
 	 
 	 local gift = 'mute_gifttg:'..chat_id
 	 if redis:get(gift) then
-	  gift = "✅"
+	  gift = "`Mute`"
 	  else 
-	  gift = "🚫"
+	  gift = "`UnMute`"
 	 end
 	 
 	 local contact = 'mute_contacttg:'..chat_id
 	 if redis:get(contact) then
-	  contact = "✅"
+	  contact = "`Mute`"
 	  else 
-	  contact = "🚫"
+	  contact = "`UnMute`"
 	 end
 	 
 	 local photo = 'mute_phototg:'..chat_id
 	 if redis:get(photo) then
-	  photo = "✅"
+	  photo = "`Mute`"
 	  else 
-	  photo = "🚫"
+	  photo = "`UnMute`"
 	 end
 	 
 	 local audio = 'mute_audiotg:'..chat_id
 	 if redis:get(audio) then
-	  audio = "✅"
+	  audio = "`Mute`"
 	  else 
-	  audio = "🚫"
+	  audio = "`UnMute`"
 	 end
 	 
 	 local voice = 'mute_voicetg:'..chat_id
 	 if redis:get(voice) then
-	  voice = "✅"
+	  voice = "`Mute`"
 	  else 
-	  voice = "🚫"
+	  voice = "`UnMute`"
 	 end
 	 
 	 local video = 'mute_videotg:'..chat_id
 	 if redis:get(video) then
-	  video = "✅"
+	  video = "`Mute`"
 	  else 
-	  video = "🚫"
+	  video = "`UnMute`"
 	 end
 	 
 	 local document = 'mute_documenttg:'..chat_id
 	 if redis:get(document) then
-	  document = "✅"
+	  document = "`Mute`"
 	  else 
-	  document = "🚫"
+	  document = "`UnMute`"
 	 end
 	 
 	 local text1 = 'mute_texttg:'..chat_id
 	 if redis:get(text1) then
-	  text1 = "✅"
+	  text1 = "`Mute`"
 	  else 
-	  text1 = "🚫"
+	  text1 = "`UnMute`"
 	 end
       if input:match("^[#!/][Ss]ettings$") and is_sudo(msg) then
 		local text = "👥 SuperGroup Settings :".."\n"
