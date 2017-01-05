@@ -876,7 +876,7 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
 	  
-	  if redis:get('edittg:'..chat_id) and  msg.new_content_.text_:lower() then
+	  if redis:get('findtg:'..chat_id) and  msg.new_content_.text_:lower() then
 	  if text_msg:find('https://telegram.me/joinchat') then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
