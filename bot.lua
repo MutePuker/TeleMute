@@ -8,7 +8,7 @@ redis = (loadfile "./libs/redis.lua")()
 sudo_users = {
   238773538,
   173606679,
-	0
+  0
 }
 
 -- Print message format. Use serpent for prettier result.
