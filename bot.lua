@@ -295,6 +295,24 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEmoji Has Been UNLocked', 1, 'md')
       end
       end
+	  --- lock inline
+	  groups = redis:sismember('groups',chat_id)
+	  if input:match("^[#!/]lock inline") and is_sudo(msg) and groups then
+       if redis:get('inlinetg:'..chat_id) then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Inline is already Locked', 1, 'md')
+       else 
+        redis:set('inlinetg:'..chat_id, true)
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nInline Has Been Locked', 1, 'md')
+      end
+      end 
+      if input:match("^[#!/]unlock inline$") and is_sudo(msg) and groups then
+       if not redis:get('inlinetg:'..chat_id) then
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Inline is already Not Locked', 1, 'md')
+       else
+         redis:del('inlinetg:'..chat_id)
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nInline Has Been UNLocked', 1, 'md')
+      end
+      end
 	  --lock tgservice
 	  groups = redis:sismember('groups',chat_id)
 	  if input:match("^[#!/][Ll]ock tgservice$") and is_sudo(msg) and groups then
@@ -795,6 +813,10 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
       end
 	  
 	  if redis:get('locatg:'..chat_id) and  msg.content_.location_ then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+      end
+	  
+	  if redis:get('inlinetg:'..chat_id) and  msg.via_bot_user_id_ then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
 
