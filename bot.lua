@@ -744,11 +744,11 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
         tdcli.changeUsername('')
 		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '#Done\nUsername Has Been Deleted', 1, 'html')
       end
-      if input:match("^[#!/][Ee]dit") then
+      if input:match("^[#!/][Ee]dit") and is_sudo(msg) then
         tdcli.editMessageText(chat_id, reply_id, nil, string.sub(input, 7), 'html')
       end
 
-	  if input:match("^[#!/]delpro") then
+	  if input:match("^[#!/]delpro") and is_sudo(msg) then
         tdcli.DeleteProfilePhoto(chat_id, {[0] = msg.id_})
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>#done profile has been deleted</b>', 1, 'html')
       end
@@ -761,7 +761,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup </b>'..string.sub(input, 14)..' <b>Created</b>', 1, 'html')
       end
 	  
-	  if input:match("^[#!/]del") and msg.reply_to_message_id_ then
+	  if input:match("^[#!/]del") and msg.reply_to_message_id_ ~= 0 then
           tg.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
       end
 	  
