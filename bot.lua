@@ -816,7 +816,7 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
 	  
-	  if redis:get('inlinetg:'..chat_id) and  msg.via_bot_user_id_ then
+	  if redis:get('inlinetg:'..chat_id) and  msg.via_bot_user_id_ ~= 0 then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
 
