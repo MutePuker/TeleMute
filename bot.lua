@@ -765,6 +765,12 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 			local gpid = msg.chat_id_
              tdcli.migrateGroupChatToChannelChat(gpid)
 	  end
+	  
+	  if input:match('^[#!/]link') then
+			--tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, '_If I,m Creator I,ve Send Gplink On Next Msg_', 1, 'md')
+			tdcli.exportChatInviteLink(msg.chat_id_)
+			tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, msg.invite_link_, 1, 'md')
+            --tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, 'link :'..ChatInviteLink, 1, 'md')
 
       if input:match("^[#!/]view") then
         tdcli.viewMessages(chat_id, {[0] = msg.id_})
