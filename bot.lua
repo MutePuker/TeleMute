@@ -761,8 +761,8 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup </b>'..string.sub(input, 14)..' <b>Created</b>', 1, 'html')
       end
 	  
-	  if input:match("^[#!/]del") then
-           tg.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
+	  if input:match("^[#!/]del") and msg.reply_to_message_id_ then
+          tg.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
       end
 	  
 	  if input:match('^[#!/]tosuper') then
