@@ -427,6 +427,13 @@ local link = 'lock_linkstg:'..chat_id
 	  else 
 	  inline = "`Disable`"
 	 end
+	 
+	 local reply = 'replytg:'..chat_id
+	 if redis:get(reply) then
+	  reply = "`Enable`"
+	  else 
+	  reply = "`Disable`"
+	 end
 	 ----------------------------
 		--muteall
 		groups = redis:sismember('groups',chat_id)
@@ -687,6 +694,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		.."*Lock Forward => *".."`"..forward.."`".."\n"
 		.."*Lock Arabic/Persian => *".."`"..arabic..'`'..'\n'
 		.."*Lock English => *".."`"..eng..'`'..'\n'
+		.."*Lock Reply => *".."`"..reply..'`'..'\n'
 		.."*Lock Fosh => *".."`"..badword..'`'..'\n'
 		.."*Lock Edit => *".."`"..edit..'`'..'\n'
 		.."*Lock Caption => *".."`"..caption..'`'..'\n'
