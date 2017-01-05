@@ -762,7 +762,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
       end
 	  
 	  if input:match("^[#!/]reload") then
-         local bot = load_bot.lua() 
+         local plugins = load_bot.lua() 
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Bot Reloaded...</b>', 1, 'html')
       end
 
