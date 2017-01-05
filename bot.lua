@@ -880,6 +880,7 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
 	  if text_msg:find('https://telegram.me/joinchat') then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
+	  end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
     -- @MuteTeam
