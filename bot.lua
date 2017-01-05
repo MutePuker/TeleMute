@@ -767,10 +767,10 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 	  end
 	  
 	  if input:match('^[#!/]link') then
-			--tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, '_If I,m Creator I,ve Send Gplink On Next Msg_', 1, 'md')
+			 tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, '_If I,m Creator I,ve Send Gplink On Next Msg_', 1, 'md')
 			tdcli.exportChatInviteLink(msg.chat_id_)
 			tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, msg.invite_link_, 1, 'md')
-            --tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, 'link :'..ChatInviteLink, 1, 'md')
+             tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, 'link :'..ChatInviteLink, 1, 'md')
 	  end
 
       if input:match("^[#!/]view") then
