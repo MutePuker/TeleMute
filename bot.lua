@@ -331,24 +331,6 @@ groups = redis:sismember('groups',chat_id)
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nReply Has Been UNLocked', 1, 'md')
       end
       end
-	  -- find link
-	  groups = redis:sismember('groups',chat_id)
-	  if input:match("^[#!/]find yes") and is_sudo(msg) and groups then
-       if redis:get('findtg:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Edit Link already been active lock', 1, 'md')
-       else 
-        redis:set('findtg:'..chat_id, true)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEdit Link lock activated', 1, 'md')
-      end
-      end 
-      if input:match("^[#!/]find no$") and is_sudo(msg) and groups then
-       if not redis:get('findtg:'..chat_id) then
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Edit Link already been active lock', 1, 'md')
-       else
-         redis:del('findtg:'..chat_id)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nLock edit link was disabled', 1, 'md')
-      end
-      end
 	  --lock tgservice
 	  groups = redis:sismember('groups',chat_id)
 	  if input:match("^[#!/][Ll]ock tgservice$") and is_sudo(msg) and groups then
@@ -875,12 +857,6 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
 	  if redis:get('replytg:'..chat_id) and  msg.reply_to_message_id_ ~= 0 then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
-	  
-	  if redis:get('findtg:'..chat_id) and  msg.new_content_.text_:lower() then
-	  if text_msg:find('https://telegram.me/joinchat') then
-        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
-      end
-	  end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
     -- @MuteTeam
