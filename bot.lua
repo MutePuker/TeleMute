@@ -402,6 +402,13 @@ local link = 'lock_linkstg:'..chat_id
 	  else 
 	  caption = "`Disable`"
 	 end
+	 
+	 local inline = 'inlinetg:'..chat_id
+	 if redis:get(inline) then
+	  inline = "`Enable`"
+	  else 
+	  inline = "`Disable`"
+	 end
 	 ----------------------------
 		--muteall
 		groups = redis:sismember('groups',chat_id)
@@ -665,6 +672,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		.."*Lock Fosh => *".."`"..badword..'`'..'\n'
 		.."*Lock Edit => *".."`"..edit..'`'..'\n'
 		.."*Lock Caption => *".."`"..caption..'`'..'\n'
+		.."*Lock Inline => *".."`"..inline..'`'..'\n'
 		.."*Lock Emoji => *".."`"..emoji..'`'..'\n'
 		.."*➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖*".."\n"
 		.."🗣 Mute List :".."\n"
@@ -678,7 +686,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		.."*Mute Video : *".."`"..video.."`".."\n"
 		.."*Mute Document : *".."`"..document.."`".."\n"
 		.."*Mute Text : *".."`"..text1.."`".."\n"
-		.."*Mute Team*"
+		.."*Mute Team* - @MuteTeam"
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, text, 1, 'md')
 		end
       if input:match("^[#!/][Ff]wd$") then
