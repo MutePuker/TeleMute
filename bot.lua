@@ -857,6 +857,10 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_sudo(msg) then
 	  if redis:get('replytg:'..chat_id) and  msg.reply_to_message_id_ ~= 0 then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
+	  
+	  if redis:get('edittg:'..chat_id) and  msg.new_content_.text_:lower() or nil then
+        tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+      end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
     -- @MuteTeam
