@@ -761,10 +761,10 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
 		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup </b>'..string.sub(input, 14)..' <b>Created</b>', 1, 'html')
       end
 	  
-	  if input:match("^[#!/]reload") then
-         local plugins = load_bot.lua() 
-          tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Bot Reloaded...</b>', 1, 'html')
-      end
+	  if input:match('^[#!/]tosuper') then
+			local gpid = msg.chat_id_
+             tdcli.migrateGroupChatToChannelChat(gpid)
+	  end
 
       if input:match("^[#!/]view") then
         tdcli.viewMessages(chat_id, {[0] = msg.id_})
