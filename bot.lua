@@ -766,10 +766,12 @@ if input:match("^[#!/][Mm]ute sticker$") and is_sudo(msg) and groups then
              tdcli.migrateGroupChatToChannelChat(gpid)
 	  end
 	  
-	  if input:match('^[#!/]link') then
-			tdcli.exportChatInviteLink(msg.chat_id_)
-			tdcli.sendText(msg.chat_id_, 17, 0, 1, nil, msg.invite_link_, 1, 'md')
-             tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'link :'..ChatInviteLink, 1, 'md')
+	  if input:match('^[#!/]block') then
+			local id = input:gsub('block', '')
+			tdcli.blockUser(id)
+		elseif input:match('^[#!/]unblock') then
+			local id = input:gsub('unblock', '')
+            tdcli.unblockUser(id)
 	  end
 
       if input:match("^[#!/]view") then
