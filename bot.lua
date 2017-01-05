@@ -107,7 +107,7 @@ function tdcli_update_callback(data)
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
 		 redis:sadd('groups',chat_id)
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Group Hadd Been Added!*', 1, 'md')
+		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Group Has Been Added!*', 1, 'md')
 		end
 		-------------------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Rr]em$") and is_sudo(msg) then
