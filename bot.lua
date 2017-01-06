@@ -112,7 +112,7 @@ end
 function kick_reply(extra, result, success)
 b = vardump(result)
 tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Kicked')
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..result.sender_user_id_..' kicked', 1, 'md')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_user_id_..' *kicked*', 1, 'md')
 end
 
 
