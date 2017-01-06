@@ -157,7 +157,7 @@ if input == "/delowner" and is_sudo(msg) and msg.reply_to_message_id_ then
 tdcli.getMessage(chat_id,msg.reply_to_message_id_,deowner_reply,nil)
 end
 
-if input:match('^[!#/]([Oo]wner)$') and is_sudo(msg) then
+if input:match('^[!#/]([Oo]wner)$') then
 local hash = 'owners:'..chat_id
 local owner = redis:get(hash)
 if owner == nil then
