@@ -107,6 +107,12 @@ tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' rem ownered', 1, 
 print(user)
 end
 
+function kick_reply(extra, result, success)
+b = vardump(result)
+tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Kicked')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..result.sender_user_id_..' kicked', 1, 'md')
+end
+
 
 function tdcli_update_callback(data)
   vardump(data)
@@ -179,6 +185,28 @@ end
 		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Group Has Been Removed By* `'..msg.sender_user_id_..'`', 1, 'md')
 		 end
 		 -----------------------------------------------------------------------------------------------------------------------------------------------
+			-----------------------------------------------------------------------
+			if input:match('^/(userid)$') and is_owner(msg) then
+		tdcli.getMessage(chat_id,reply,userid_reply,nil)
+	end
+	
+	if input:match('^[!#/](kick)$') and is_owner(msg) then
+		tdcli.getMessage(chat_id,reply,kick_reply,nil)
+	end
+	
+	if input:match('^[!#/]kick (.*)') and not input:find('@') and is_owner(msg) then
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]kick (.*)')..' kicked', 1, 'md')
+		tdcli.changeChatMemberStatus(chat_id, input:match('^[!#/]kick (.*)'), 'Kicked')
+	end
+
+	if input:match('^[!#/]kick (.*)') and input:find('@') and is_owner(msg) then
+	function Inline_Callback_(arg, data)
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]kick (.*)')..' kicked', 1, 'md')
+		tdcli.changeChatMemberStatus(chat_id, data.id_, 'Kicked')
+	end
+		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]kick (.*)')}, Inline_Callback_, nil)
+	end
+			--------------------------------------------------------
 			
 			--lock links
 groups = redis:sismember('groups',chat_id)
