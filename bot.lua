@@ -95,7 +95,7 @@ local user = result.sender_user_id_
 local ch = result.chat_id_
 redis:del('owners:'..ch)
 redis:set('owners:'..ch,user)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' ownered', 1, 'md')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *ownered*', 1, 'md')
 print(user)
 end
 
@@ -105,7 +105,7 @@ local msg_id = result.id_
 local user = result.sender_user_id_
 local ch = result.chat_id_
 redis:del('owners:'..ch)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' rem ownered', 1, 'md')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem ownered*', 1, 'md')
 print(user)
 end
 
@@ -161,10 +161,10 @@ if input:match('^[!#/]([Oo]wner)$') and is_sudo(msg) then
 local hash = 'owners:'..chat_id
 local owner = redis:get(hash)
 if owner == nil then
-tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Owner', 1, 'md')
+tdcli.sendText(chat_id, 0, 0, 1, nil, '🔸Group *Not* Owner ', 1, 'md')
 end
 local owner_list = redis:get('owners:'..chat_id)
-text85 = 'Group Owner : '..owner_list
+text85 = '👤*Group Owner :*\n['..owner_list]
 tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
 end
 	if input:match('^[!#/]([Ss]etowner)$') and not input:find('@') and is_sudo(msg) then
@@ -188,10 +188,6 @@ end
 		 end
 		 -----------------------------------------------------------------------------------------------------------------------------------------------
 			-----------------------------------------------------------------------
-			if input:match('^/(userid)$') and is_owner(msg) then
-		tdcli.getMessage(chat_id,reply,userid_reply,nil)
-	end
-	
 	if input:match('^[!#/](kick)$') and is_owner(msg) then
 		tdcli.getMessage(chat_id,reply,kick_reply,nil)
 	end
