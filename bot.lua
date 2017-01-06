@@ -150,14 +150,14 @@ function tdcli_update_callback(data)
 	  
 
       		-----------------------------------------------------------------------------------------------------------------------------
-			if input == "[!#/]setowner" and is_sudo(msg) and msg.reply_to_message_id_ then
+			if input:match('^[!#/]([Ss]etowner)$') and is_owner(msg) and msg.reply_to_message_id_ then
 tdcli.getMessage(chat_id,msg.reply_to_message_id_,setowner_reply,nil)
 end
-if input == "[!#/]delowner" and is_sudo(msg) and msg.reply_to_message_id_ then
+if input == "/delowner" and is_sudo(msg) and msg.reply_to_message_id_ then
 tdcli.getMessage(chat_id,msg.reply_to_message_id_,deowner_reply,nil)
 end
 
-if input == '[!#/]owner' and is_sudo(msg) then
+if input:match('^[!#/]([Oo]wner)$') and is_sudo(msg) then
 local hash = 'owners:'..chat_id
 local owner = redis:get(hash)
 if owner == nil then
@@ -167,14 +167,14 @@ local owner_list = redis:get('owners:'..chat_id)
 text85 = 'Group Owner : '..owner_list
 tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
 end
-	if input:match('^[!#/]setowner (.*)') and not input:find('@') and is_sudo(msg) then
+	if input:match('^[!#/]([Ss]etowner)$') and not input:find('@') and is_sudo(msg) then
 		redis:del('owners:'..chat_id)
-		redis:set('owners:'..chat_id,input:match('^[/!#]setowner (.*)'))
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]setowner (.*)')..' ownered', 1, 'md')
+		redis:set('owners:'..chat_id,input:match('^[/!#]([Ss]etowner) (.*)'))
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]([Ss]etowner) (.*)')..' ownered', 1, 'md')
 	end
-	if input:match('^[/!#]delowner (.*)') and is_sudo(msg) then
+	if input:match('^[!/#]([Dd]elowner) (.*)') and is_sudo(msg) then
 		redis:del('owners:'..chat_id)
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!/#]([Dd]elowner) (.*)')..' rem ownered', 1, 'md')
 	end
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
