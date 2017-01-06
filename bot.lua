@@ -161,8 +161,8 @@ local owner = redis:get(hash)
 if owner == nil then
 tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Owner', 1, 'md')
 end
-local owner_list = redis:get('owners:'..chat_id)
-text85 = 'Group Owner : '..owner_list
+local onwer = redis:get('owners:'..chat_id)
+text85 = 'Group Owner : '..onwer
 tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
 end
 	if input:match('^[!#/]setowner (.*)') and not input:find('@') and is_sudo(msg) then
