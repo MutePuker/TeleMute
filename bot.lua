@@ -161,8 +161,8 @@ local owner = redis:get(hash)
 if owner == nil then
 tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Owner', 1, 'md')
 end
-local onwer = redis:get('owners:'..chat_id)
-text85 = 'Group Owner : '..onwer
+local owner_list = redis:get('owners:'..chat_id)
+text85 = 'Group Owner : '..owner_list
 tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
 end
 	if input:match('^[!#/]setowner (.*)') and not input:find('@') and is_sudo(msg) then
@@ -796,7 +796,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_owner(msg) and groups then
 		.."🗣 Mute List :".."\n"
 		.."*Mute All : *".."`"..All.."`".."\n"
 		.."*Mute Sticker : *".."`"..sticker.."`".."\n"
-		.."*Mute Gift : *".."`"..gift.."`".."\n"
+		.."*Mute Gif : *".."`"..gift.."`".."\n"
 		.."*Mute Contact : *".."`"..contact.."`".."\n"
 		.."*Mute Photo : *".."`"..photo.."`".."\n"
 		.."*Mute Audio : *".."`"..audio.."`".."\n"
@@ -877,7 +877,7 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_owner(msg) then
      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
    end
    
-   if redis:get('mute_contacttg:'..chat_id) and msg.content_.animation_ and not is_owner(msg) then
+   if redis:get('mute_giftg:'..chat_id) and msg.content_.animation_ and not is_owner(msg) then
      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
    end
    
