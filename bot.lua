@@ -5,6 +5,8 @@ package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
 -- @MuteTeam
 tdcli = dofile('tdcli.lua')
 redis = (loadfile "./libs/redis.lua")()
+serpent = require('serpent')
+serp = require 'serpent'.block
 sudo_users = {
   238773538,
   173606679,
