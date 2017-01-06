@@ -11,6 +11,33 @@ sudo_users = {
   0
 }
 
+
+function is_sudo(msg)
+local var = false
+for v,user in pairs(sudo_users) do
+if user == msg.sender_user_id_ then
+var = true
+end
+end
+return var
+end
+
+function is_owner(msg)
+  local var = false
+  local chat_id = msg.chat_id_
+  local user_id = msg.sender_user_id_
+  local group_mods = redis:get('owners:'..chat_id)
+  if group_mods == tostring(user_id) then
+    var = true
+  end
+  for v, user in pairs(sudo_users) do
+    if user == user_id then
+      var = true
+    end
+  end
+  return var
+end
+
 -- Print message format. Use serpent for prettier result.
 function vardump(value, depth, key)
   local linePrefix = ''
@@ -58,15 +85,26 @@ function dl_cb(arg, data)
   vardump(data)
 end
 
-function is_sudo(msg)
-  local var = false
-  -- Check users id in config
-  for v,user in pairs(sudo_users) do
-    if user == msg.sender_user_id_ then
-      var = true
-    end
-  end
-  return var
+
+local function setowner_reply(extra, result, success)
+t = vardump(result)
+local msg_id = result.id_
+local user = result.sender_user_id_
+local ch = result.chat_id_
+redis:del('owners:'..ch)
+redis:set('owners:'..ch,user)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' ownered', 1, 'md')
+print(user)
+end
+
+local function deowner_reply(extra, result, success)
+t = vardump(result)
+local msg_id = result.id_
+local user = result.sender_user_id_
+local ch = result.chat_id_
+redis:del('owners:'..ch)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' rem ownered', 1, 'md')
+print(user)
 end
 
 
@@ -104,6 +142,32 @@ function tdcli_update_callback(data)
 	  
 
       		-----------------------------------------------------------------------------------------------------------------------------
+			if input == "[!#/]setowner" and is_sudo(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,setowner_reply,nil)
+end
+if input == "[!#/]delowner" and is_sudo(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,deowner_reply,nil)
+end
+
+if input == '[!#/]owner' and is_sudo(msg) then
+local hash = 'owners:'..chat_id
+local owner = redis:get(hash)
+if owner == nil then
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Owner', 1, 'md')
+end
+local owner_list = redis:get('owners:'..chat_id)
+text85 = 'Group Owner : '..owner_list
+tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
+end
+	if input:match('^[!#/]setowner (.*)') and not input:find('@') and is_sudo(msg) then
+		redis:del('owners:'..chat_id)
+		redis:set('owners:'..chat_id,input:match('^[/!#]setowner (.*)'))
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]setowner (.*)')..' ownered', 1, 'md')
+	end
+	if input:match('^[/!#]delowner (.*)') and is_sudo(msg) then
+		redis:del('owners:'..chat_id)
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
+	end
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
 		 redis:sadd('groups',chat_id)
