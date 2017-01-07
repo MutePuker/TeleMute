@@ -161,6 +161,12 @@ function kick_reply(extra, result, success)
   tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_user_id_..' *kicked*', 1, 'md')
 end
 
+function ban_reply(extra, result, success)
+  b = vardump(result)
+  tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Banned')
+  tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_user_id_..' *banned*', 1, 'md')
+end
+
 
 local function setmute_reply(extra, result, success)
   vardump(result)
@@ -304,6 +310,24 @@ function tdcli_update_callback(data)
         tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]kick (.*)')}, Inline_Callback_, nil)
       end
       --------------------------------------------------------
+      ----------------------------------------------------------
+	  if input:match('^[!#/](ban)$') and is_owner(msg) then
+        tdcli.getMessage(chat_id,reply,ban_reply,nil)
+      end
+
+      if input:match('^[!#/]ban (.*)') and not input:find('@') and is_owner(msg) then
+        tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]ban (.*)')..' banned', 1, 'md')
+        tdcli.changeChatMemberStatus(chat_id, input:match('^[!#/]ban (.*)'), 'Banned')
+      end
+
+      if input:match('^[!#/]ban (.*)') and input:find('@') and is_owner(msg) then
+        function Inline_Callback_(arg, data)
+          tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]ban (.*)')..' banned', 1, 'md')
+          tdcli.changeChatMemberStatus(chat_id, data.id_, 'Banned')
+        end
+        tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]ban (.*)')}, Inline_Callback_, nil)
+      end
+	  --------------------------------------------------------
       ----------------------------------------------------------
       if input:match('^[/!#]muteuser') and is_owner(msg) and msg.reply_to_message_id_ then
         redis:set('tbt:'..chat_id,'yes')
