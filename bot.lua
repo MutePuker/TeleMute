@@ -346,7 +346,7 @@ function tdcli_update_callback(data)
       groups = redis:sismember('groups',chat_id)
       if input:match("^[#!/]lock links$") and is_owner(msg) and groups then
         if redis:get('lock_linkstg:'..chat_id) then
-          tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Links is already Locked_', 1, 'md')
+          tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫_ Links is already Locked_', 1, 'md')
         else
           redis:set('lock_linkstg:'..chat_id, true)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Links Has Been Locked', 1, 'md')
@@ -1142,7 +1142,12 @@ function tdcli_update_callback(data)
       end
     end
     -- AntiFlood --
+		elseif data.ID == "UpdateMessageEdited" then
+if redis:get('edittg:'..data.chat_id_) then
+  tdcli.deleteMessages(data.chat_id_, {[0] = tonumber(data.message_id_)})
+end 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
+	
     -- @MuteTeam
     tdcli_function ({
       ID="GetChats",
