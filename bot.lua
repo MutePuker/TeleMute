@@ -926,6 +926,10 @@ if input:match("^[#!/][Mm]ute sticker$") and is_owner(msg) and groups then
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>#done profile has been deleted</b>', 1, 'html')
       end
 	  
+	  if input:match("^[#!/][Ss]etrules") and is_owner(msg) then
+        tdcli.PrivacyRules(string.sub(input, 13), nil, 1)
+		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'Rules Set :'..string.sub(input, 13)..'', 1, 'html')
+	  
       if input:match("^[#!/][Ii]nvite") and is_sudo(msg) then
         tdcli.addChatMember(chat_id, string.sub(input, 9), 20)
       end
