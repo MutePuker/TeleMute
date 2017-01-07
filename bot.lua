@@ -1112,7 +1112,7 @@ function tdcli_update_callback(data)
     if redis:get('captg:'..chat_id) and  msg.content_.caption_ and not is_owner(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
-end
+
     if redis:get('locatg:'..chat_id) and  msg.content_.location_ and not is_owner(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
@@ -1151,5 +1151,4 @@ end
       limit_=20
     }, dl_cb, nil)
   end
-end
 end
