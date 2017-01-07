@@ -576,7 +576,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Flood is already Locked', 1, 'md')
         else
           redis:set('floodtg:'..chat_id, true)
-          tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\Flood Has Been Locked', 1, 'md')
+          tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nFlood Has Been Locked', 1, 'md')
         end
       end
       if input:match("^[#!/]unlock flood$") and is_owner(msg) and groups then
