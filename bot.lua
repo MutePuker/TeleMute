@@ -1101,5 +1101,3 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_owner(msg) then
     }, dl_cb, nil)
   end
 end
-end
-end
