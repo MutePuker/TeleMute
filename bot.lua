@@ -982,18 +982,13 @@ if input:match("^[#!/][Mm]ute sticker$") and is_owner(msg) and groups then
       end
 	  
 	  if input:match("^[#!/]del") and msg.reply_to_message_id_ ~= 0 then
-          tg.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
+          tdcli.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
       end
 	  
 	  if input:match('^[#!/]tosuper') then
 			local gpid = msg.chat_id_
              tdcli.migrateGroupChatToChannelChat(gpid)
 	  end
-	  
-	  if input:match("^[#!/]reload") then
-        local plug_up = load_plugins()
-		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>- Bot Reloaded . . .</b>', 1, 'html')
-      end
 
       if input:match("^[#!/]view") then
         tdcli.viewMessages(chat_id, {[0] = msg.id_})
