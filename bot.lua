@@ -142,32 +142,9 @@ tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Kicked')
 tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_user_id_..' *kicked*', 1, 'md')
 end
 
-local function promote_reply(extra, result, success)
-t = vardump(result)
-local msg_id = result.id_
-local user = result.sender_user_id_
-local ch = result.chat_id_
-redis:del('promote:'..ch)
-redis:set('promote:'..ch,user)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
-print(user)
-end
 
-local function demote_reply(extra, result, success)
-t = vardump(result)
-local msg_id = result.id_
-local user = result.sender_user_id_
-local ch = result.chat_id_
-redis:del('promote:'..ch)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Demoted*', 1, 'md')
-print(user)
-end
 
-function ban_reply(extra, result, success)
-b = vardump(result)
-tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Banned')
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_user_id_..' *Banned*', 1, 'md')
-end
+
 
 
 function tdcli_update_callback(data)
@@ -242,22 +219,7 @@ end
 		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
 	end
 	-----------------------------------------------------------------------------------------------------------------------
-	if input:match('^[!#/]([Pp]romote)$') and is_owner(msg) and msg.reply_to_message_id_ then
-tdcli.getMessage(chat_id,msg.reply_to_message_id_,promote_reply,nil)
-end
-if input == "[!#/]demote" and is_sudo(msg) and msg.reply_to_message_id_ then
-tdcli.getMessage(chat_id,msg.reply_to_message_id_,demote_reply,nil)
-end
-
-	if input:match('^[!#/]([Pp]romote)$') and not input:find('@') and is_sudo(msg) then
-		redis:del('promote:'..chat_id)
-		redis:set('promote:'..chat_id,input:match('^[/!#]([Pp]romote) (.*)'))
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]([Pp]romote) (.*)')..' Promoted', 1, 'md')
-	end
-	if input:match('^[!/#]([Dd]demote) (.*)') and is_sudo(msg) then
-		redis:del('promote:'..chat_id)
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!/#]([Dd]emote) (.*)')..' rem Promoted', 1, 'md')
-	end
+	
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
 		 redis:sadd('groups',chat_id)
@@ -287,22 +249,6 @@ end
 		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]kick (.*)')}, Inline_Callback_, nil)
 	end
 			--------------------------------------------------------
-			if input:match('^[!#/](ban)$') and is_owner(msg) then
-		tdcli.getMessage(chat_id,reply,ban_reply,nil)
-	end
-	
-	if input:match('^[!#/]ban (.*)') and not input:find('@') and is_owner(msg) then
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]ban (.*)')..' Banned', 1, 'md')
-		tdcli.changeChatMemberStatus(chat_id, input:match('^[!#/]ban (.*)'), 'Banned')
-	end
-
-	if input:match('^[!#/]ban (.*)') and input:find('@') and is_owner(msg) then
-	function Inline_Callback_(arg, data)
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]ban (.*)')..' Banned', 1, 'md')
-		tdcli.changeChatMemberStatus(chat_id, data.id_, 'Banned')
-	end
-		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]ban (.*)')}, Inline_Callback_, nil)
-	end
 			----------------------------------------------------------
 			if input:match('^[/!#]muteuser') and is_owner(msg) and msg.reply_to_message_id_ then
 redis:set('tbt:'..chat_id,'yes')
