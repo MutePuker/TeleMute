@@ -52,7 +52,7 @@ function is_owner(msg)
   return var
 end
 --- function promote
-function is_momed(msg)
+function is_mod(msg)
   local var = false
   local chat_id = msg.chat_id_
   local user_id = msg.sender_user_id_
