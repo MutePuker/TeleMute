@@ -51,22 +51,6 @@ function is_owner(msg)
   end
   return var
 end
---- function promote
-function is_momed(msg)
-  local var = false
-  local chat_id = msg.chat_id_
-  local user_id = msg.sender_user_id_
-  local group_mods = redis:get('promote:'..chat_id)
-  if group_mods == tostring(user_id) then
-    var = true
-  end
-  for v, user in pairs(momed_users) do
-    if user == user_id then
-      var = true
-    end
-  end
-  return var
-end
 -- Print message format. Use serpent for prettier result.
 function vardump(value, depth, key)
   local linePrefix = ''
@@ -142,11 +126,6 @@ tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Kicked')
 tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_user_id_..' *kicked*', 1, 'md')
 end
 
-
-
-
-
-
 function tdcli_update_callback(data)
   vardump(data)
 
@@ -198,7 +177,7 @@ local owner_list = redis:get('owners:'..chat_id)
 text85 = '👤*Group Owner :*\n\n '..owner_list
 tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
 end
-	if input:match('^[/!#]setowner (.*)') and not input:find('@') and is_sudo(msg) then
+	if input:match('^[/!#]setowner (.*)') and not input:find('@') and is_owner(msg) then
 		redis:del('owners:'..chat_id)
 		redis:set('owners:'..chat_id,input:match('^[/!#]setowner (.*)'))
 		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]setowner (.*)')..' ownered', 1, 'md')
@@ -214,12 +193,10 @@ end
 	end
 	
 	
-	if input:match('^[/!#]delowner (.*)') and is_sudo(msg) then
+	if input:match('^[/!#]delowner (.*)') and is_owner(msg) then
 		redis:del('owners:'..chat_id)
 		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
 	end
-	-----------------------------------------------------------------------------------------------------------------------
-	
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
 		 redis:sadd('groups',chat_id)
@@ -248,7 +225,6 @@ end
 	end
 		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]kick (.*)')}, Inline_Callback_, nil)
 	end
-			--------------------------------------------------------
 			----------------------------------------------------------
 			if input:match('^[/!#]muteuser') and is_owner(msg) and msg.reply_to_message_id_ then
 redis:set('tbt:'..chat_id,'yes')
