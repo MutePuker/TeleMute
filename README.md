@@ -7,7 +7,7 @@ git clone https://github.com/MutePuker/TeleMute.git
 cd TeleMute
 chmod +x install.sh
 chmod +x launch.sh
-chmod +x tg.sh
+chmod +x tg
 ./install.sh
 ./launch.sh
 # Enter a phone number & confirmation code.
