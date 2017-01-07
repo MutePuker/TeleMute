@@ -134,6 +134,27 @@ tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem 
 print(user)
 end
 
+local function promote_reply(extra, result, success)
+t = vardump(result)
+local msg_id = result.id_
+local user = result.sender_user_id_
+local ch = result.chat_id_
+redis:del('promote:'..ch)
+redis:set('promote:'..ch,user)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
+print(user)
+end
+
+local function demote_reply(extra, result, success)
+t = vardump(result)
+local msg_id = result.id_
+local user = result.sender_user_id_
+local ch = result.chat_id_
+redis:del('promote:'..ch)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Demoted*', 1, 'md')
+print(user)
+end
+
 function kick_reply(extra, result, success)
 b = vardump(result)
 tdcli.changeChatMemberStatus(result.chat_id_, result.sender_user_id_, 'Kicked')
@@ -227,7 +248,33 @@ end
 		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
 	end
 	-----------------------------------------------------------------------------------------------------------------------
+	if input:match('^[!#/]([Pp]romote)$') and is_owner(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,promote_reply,nil)
+end
+if input == "[!#/]demote" and is_sudo(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,demote_reply,nil)
+end
+
+	if input:match('^[/!#]promote (.*)') and not input:find('@') and is_sudo(msg) then
+		redis:del('promote:'..chat_id)
+		redis:set('promote:'..chat_id,input:match('^[/!#]promote (.*)'))
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]promote (.*)')..' Promoted', 1, 'md')
+	end
 	
+	if input:match('^[/!#]promote (.*)') and input:find('@') and is_owner(msg) then
+	function Inline_Callback_(arg, data)
+		redis:del('promote:'..chat_id)
+		redis:set('promote:'..chat_id,input:match('^[/!#]promote (.*)'))
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]promote (.*)')..' Promoted', 1, 'md')
+	end
+		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[/!#]promote (.*)')}, Inline_Callback_, nil)
+	end
+	
+	
+	if input:match('^[/!#]demote (.*)') and is_sudo(msg) then
+		redis:del('promote:'..chat_id)
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' Demoted', 1, 'md')
+	end
 ---------------------------------------------------------------------------------------------------------------------------------
 		if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
 		 redis:sadd('groups',chat_id)
@@ -917,7 +964,7 @@ if input:match("^[#!/][Mm]ute sticker$") and is_owner(msg) and groups then
         tdcli.changeUsername('')
 		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '#Done\nUsername Has Been Deleted', 1, 'html')
       end
-      if input:match("^[#!/][Ee]dit") and is_sudo(msg) then
+      if input:match("^[#!/][Ee]dit") and is_owner(msg) then
         tdcli.editMessageText(chat_id, reply_id, nil, string.sub(input, 7), 'html')
       end
 
@@ -925,10 +972,6 @@ if input:match("^[#!/][Mm]ute sticker$") and is_owner(msg) and groups then
         tdcli.DeleteProfilePhoto(chat_id, {[0] = msg.id_})
 		tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>#done profile has been deleted</b>', 1, 'html')
       end
-	  
-	  if input:match("^[#!/][Ss]etrules") and is_owner(msg) then
-        tdcli.PrivacyRules(string.sub(input, 13), nil, 1)
-		 tdcli.sendText(chat_id, msg.id_, 0, 1, nil, 'Rules Set :'..string.sub(input, 13)..'', 1, 'html')
 	  
       if input:match("^[#!/][Ii]nvite") and is_sudo(msg) then
         tdcli.addChatMember(chat_id, string.sub(input, 9), 20)
