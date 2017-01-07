@@ -1003,6 +1003,11 @@ end
         tdcli.editMessageText(chat_id, reply_id, nil, string.sub(input, 7), 'html')
       end
 
+      if text:match("^[#!/]git pull$") and is_sudo(msg) then
+  io.popen("git pull")
+         send(msg.chat_id_, msg.id_, 1, '✅ عمليات [Git Pull] به اتمام رسيد . . .‌\n🔸پيشنهاد ميشود ربات در مجددا launch كنيد . . . ', 1, 'md')
+    end
+
       if input:match("^[#!/]delpro") and is_sudo(msg) then
         tdcli.DeleteProfilePhoto(chat_id, {[0] = msg.id_})
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>#done profile has been deleted</b>', 1, 'html')
