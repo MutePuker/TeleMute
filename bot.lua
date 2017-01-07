@@ -56,8 +56,10 @@ function is_mod(msg)
   local var = false
   local chat_id = msg.chat_id_
   local user_id = msg.sender_user_id_
-  local group_mods = redis:get('promote:'..chat_id)
-  if group_mods == tostring(user_id) then
+  if redis:sismember('mods:'..chat_id,user_id) then
+    var = true
+  end
+  if  redis:get('owners:'..chat_id) == tostring(user_id) then
     var = true
   end
   for v, user in pairs(sudo_users) do
@@ -134,24 +136,23 @@ local function deowner_reply(extra, result, success)
   print(user)
 end
 
-local function promote_reply(extra, result, success)
+
+local function setmod_reply(extra, result, success)
 vardump(result)
 local msg = result.id_
 local user = result.sender_user_id_
-local chat = result.chat_id
-redis:sadd('promote:'..chat,user)
-  tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
-  print(user)
+local chat = result.chat_id_
+redis:sadd('mods:'..chat,user)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, ' #Done\nuser '..user..' *Promoted*', 1, 'md')
 end
 
-local function demote_reply(extra, result, success)
+local function remmod_reply(extra, result, success)
 vardump(result)
 local msg = result.id_
 local user = result.sender_user_id_
-local chat = result.chat_id
-  redis:srem('promote:'..chat,user)
-  tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Promoted*', 1, 'md')
-  print(user)
+local chat = result.chat_id_
+redis:srem('mods:'..chat,user)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, ' #Done\nuser '..user..' *Rem Promoted*', 1, 'md')
 end
 
 function kick_reply(extra, result, success)
@@ -253,40 +254,31 @@ function tdcli_update_callback(data)
         tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
       end
       -----------------------------------------------------------------------------------------------------------------------
-      if input:match('^[!#/]([Pp]romote)$') and is_owner(msg) and msg.reply_to_message_id_ then
-        tdcli.getMessage(chat_id,msg.reply_to_message_id_,promote_reply,nil)
-      end
-      if input == "[!#/]([Dd]emote)" and is_sudo(msg) and msg.reply_to_message_id_ then
-        tdcli.getMessage(chat_id,msg.reply_to_message_id_,demote_reply,nil)
-      end
-
-      if input:match('^[/!#]promote (.*)') and not input:find('@') and is_sudo(msg) then
-        redis:del('promote:'..chat_id)
-        redis:set('promote:'..chat_id,input:match('^[/!#]promote (.*)'))
-        tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]promote (.*)')..' Promoted', 1, 'md')
-      end
-
-      if input:match('^[/!#]promote (.*)') and input:find('@') and is_owner(msg) then
-        function Inline_Callback_(arg, data)
-          redis:del('promote:'..chat_id)
-          redis:set('promote:'..chat_id,input:match('^[/!#]promote (.*)'))
-          tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]promote (.*)')..' Promoted', 1, 'md')
-        end
-        tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[/!#]promote (.*)')}, Inline_Callback_, nil)
-      end
-
-
-      if input:match('^[/!#]demote (.*)') and is_sudo(msg) then
-        redis:del('promote:'..chat_id)
-        tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]demote (.*)')..' Demoted', 1, 'md')
-      end
+      if input:match('^[/!#]promote') and is_sudo(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,setmod_reply,nil)
+end
+if input:match('^[/!#]demote') and is_sudo(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,remmod_reply,nil)
+end
 			
-			if input:match('^[/!#]modlist') then
-if redis:scard('promote:'..chat_id) == 0 then
+			sm = input:match('^[/!#]setpromotemod (.*)')
+if sm and is_sudo(msg) then
+  redis:sadd('mods:'..chat_id,sm)
+  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..sm..' moded', 1, 'md')
+end
+
+dm = input:match('^[/!#]demote (.*)')
+if dm and is_sudo(msg) then
+  redis:srem('mods:'..chat_id,dm)
+  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..dm..' rem moded', 1, 'md')
+end
+
+if input:match('^[/!#]modlist') then
+if redis:scard('mods:'..chat_id) == 0 then
 tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Mod', 1, 'md')
 end
 local text = "Group Mod List : \n"
-for k,v in pairs(redis:smembers('promote:'..chat_id)) do
+for k,v in pairs(redis:smembers('mods:'..chat_id)) do
 text = text.."_"..k.."_ - *"..v.."*\n"
 end
 tdcli.sendText(chat_id, 0, 0, 1, nil, text, 1, 'md')
