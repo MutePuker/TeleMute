@@ -293,16 +293,16 @@ function tdcli_update_callback(data)
       end
       -----------------------------------------------------------------------------------------------------------------------------------------------
       -----------------------------------------------------------------------
-      if input:match('^[!#/](kick)$') and is_owner(msg) then
+      if input:match('^[!#/](kick)$') and is_mod(msg) then
         tdcli.getMessage(chat_id,reply,kick_reply,nil)
       end
 
-      if input:match('^[!#/]kick (.*)') and not input:find('@') and is_owner(msg) then
+      if input:match('^[!#/]kick (.*)') and not input:find('@') and is_mod(msg) then
         tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]kick (.*)')..' kicked', 1, 'md')
         tdcli.changeChatMemberStatus(chat_id, input:match('^[!#/]kick (.*)'), 'Kicked')
       end
 
-      if input:match('^[!#/]kick (.*)') and input:find('@') and is_owner(msg) then
+      if input:match('^[!#/]kick (.*)') and input:find('@') and is_mod(msg) then
         function Inline_Callback_(arg, data)
           tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!#/]kick (.*)')..' kicked', 1, 'md')
           tdcli.changeChatMemberStatus(chat_id, data.id_, 'Kicked')
@@ -311,21 +311,21 @@ function tdcli_update_callback(data)
       end
       --------------------------------------------------------
       ----------------------------------------------------------
-      if input:match('^[/!#]muteuser') and is_owner(msg) and msg.reply_to_message_id_ then
+      if input:match('^[/!#]muteuser') and is_mod(msg) and msg.reply_to_message_id_ then
         redis:set('tbt:'..chat_id,'yes')
         tdcli.getMessage(chat_id,msg.reply_to_message_id_,setmute_reply,nil)
       end
-      if input:match('^[/!#]unmuteuser') and is_owner(msg) and msg.reply_to_message_id_ then
+      if input:match('^[/!#]unmuteuser') and is_mod(msg) and msg.reply_to_message_id_ then
         tdcli.getMessage(chat_id,msg.reply_to_message_id_,demute_reply,nil)
       end
       mu = input:match('^[/!#]muteuser (.*)')
-      if mu and is_owner(msg) then
+      if mu and is_mod(msg) then
         redis:sadd('muteusers:'..chat_id,mu)
         redis:set('tbt:'..chat_id,'yes')
         tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..mu..' added to mutelist', 1, 'md')
       end
       umu = input:match('^[/!#]unmuteuser (.*)')
-      if umu and is_owner(msg) then
+      if umu and is_mod(msg) then
         redis:srem('muteusers:'..chat_id,umu)
         tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..umu..' removed to mutelist', 1, 'md')
       end
@@ -344,7 +344,7 @@ function tdcli_update_callback(data)
 
       --lock links
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock links$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock links$") and is_mod(msg) and groups then
         if redis:get('lock_linkstg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫_ Links is already Locked_', 1, 'md')
         else
@@ -352,7 +352,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Links Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock links$")  and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock links$")  and is_mod(msg) and groups then
         if not redis:get('lock_linkstg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 links is already UnLocked', 1, 'md')
         else
@@ -362,7 +362,7 @@ function tdcli_update_callback(data)
       end
       --lock username
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock username$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock username$") and is_mod(msg) and groups then
         if redis:get('usernametg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Username is already Locked', 1, 'md')
         else
@@ -370,7 +370,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nUsername Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock username$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock username$") and is_mod(msg) and groups then
         if not redis:get('usernametg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Username is already UnLocked', 1, 'md')
         else
@@ -380,7 +380,7 @@ function tdcli_update_callback(data)
       end
       --lock tag
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock tag$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock tag$") and is_mod(msg) and groups then
         if redis:get('tagtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Tag is already Locked', 1, 'md')
         else
@@ -388,7 +388,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nTag Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock tag$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock tag$") and is_mod(msg) and groups then
         if not redis:get('tagtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Tag is already Not Locked', 1, 'md')
         else
@@ -398,7 +398,7 @@ function tdcli_update_callback(data)
       end
       --lock forward
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock forward$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock forward$") and is_mod(msg) and groups then
         if redis:get('forwardtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Forward is already Locked', 1, 'md')
         else
@@ -406,7 +406,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nForward Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock forward$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock forward$") and is_mod(msg) and groups then
         if not redis:get('forwardtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Forward is already Not Locked', 1, 'md')
         else
@@ -416,7 +416,7 @@ function tdcli_update_callback(data)
       end
       --arabic/persian
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock arabic$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock arabic$") and is_mod(msg) and groups then
         if redis:get('arabictg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Persian/Arabic is already Locked', 1, 'md')
         else
@@ -424,7 +424,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nPersian/Arabic Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock arabic$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock arabic$") and is_mod(msg) and groups then
         if not redis:get('arabictg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Persian/Arabic is already Not Locked', 1, 'md')
         else
@@ -434,7 +434,7 @@ function tdcli_update_callback(data)
       end
       ---english
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock english$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock english$") and is_mod(msg) and groups then
         if redis:get('engtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 English is already Locked', 1, 'md')
         else
@@ -442,7 +442,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEnglish Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock english$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock english$") and is_mod(msg) and groups then
         if not redis:get('engtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 English is already Not Locked', 1, 'md')
         else
@@ -452,7 +452,7 @@ function tdcli_update_callback(data)
       end
       --lock foshtg
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock fosh$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock fosh$") and is_mod(msg) and groups then
         if redis:get('badwordtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Fosh is already Locked', 1, 'md')
         else
@@ -460,7 +460,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nFosh Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock fosh$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock fosh$") and is_mod(msg) and groups then
         if not redis:get('badwordtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Fosh is already Not Locked', 1, 'md')
         else
@@ -470,7 +470,7 @@ function tdcli_update_callback(data)
       end
       --lock edit
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock edit$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock edit$") and is_mod(msg) and groups then
         if redis:get('edittg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Edit is already Locked', 1, 'md')
         else
@@ -478,7 +478,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEdit Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock edit$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock edit$") and is_mod(msg) and groups then
         if not redis:get('edittg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Edit is already Not Locked', 1, 'md')
         else
@@ -487,7 +487,7 @@ function tdcli_update_callback(data)
         end
       end
       --- lock Caption
-      if input:match("^[#!/]lock caption$") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock caption$") and is_mod(msg) and groups then
         if redis:get('captg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Caption is already Locked', 1, 'md')
         else
@@ -495,7 +495,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nCaption Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock caption$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock caption$") and is_mod(msg) and groups then
         if not redis:get('captg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Caption is already Not Locked', 1, 'md')
         else
@@ -505,7 +505,7 @@ function tdcli_update_callback(data)
       end
       --lock emoji
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock emoji") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock emoji") and is_mod(msg) and groups then
         if redis:get('emojitg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Emoji is already Locked', 1, 'md')
         else
@@ -513,7 +513,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nEmoji Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock emoji$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock emoji$") and is_mod(msg) and groups then
         if not redis:get('emojitg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Emoji is already Not Locked', 1, 'md')
         else
@@ -523,7 +523,7 @@ function tdcli_update_callback(data)
       end
       --- lock inline
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock inline") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock inline") and is_mod(msg) and groups then
         if redis:get('inlinetg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Inline is already Locked', 1, 'md')
         else
@@ -531,7 +531,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nInline Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock inline$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock inline$") and is_mod(msg) and groups then
         if not redis:get('inlinetg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Inline is already Not Locked', 1, 'md')
         else
@@ -541,7 +541,7 @@ function tdcli_update_callback(data)
       end
       -- lock reply
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock reply") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock reply") and is_mod(msg) and groups then
         if redis:get('replytg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Reply is already Locked', 1, 'md')
         else
@@ -549,7 +549,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nReply Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock reply$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock reply$") and is_mod(msg) and groups then
         if not redis:get('replytg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Reply is already Not Locked', 1, 'md')
         else
@@ -559,7 +559,7 @@ function tdcli_update_callback(data)
       end
       --lock tgservice
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Ll]ock tgservice$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Ll]ock tgservice$") and is_mod(msg) and groups then
         if redis:get('tgservice:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 TGservice is already Locked', 1, 'md')
         else
@@ -567,7 +567,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nTGservice Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nlock tgservice$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nlock tgservice$") and is_mod(msg) and groups then
         if not redis:get('tgservice:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 TGservice is already Not Locked', 1, 'md')
         else
@@ -577,7 +577,7 @@ function tdcli_update_callback(data)
       end
       --lock flood (by @Flooding)
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/]lock flood") and is_owner(msg) and groups then
+      if input:match("^[#!/]lock flood") and is_mod(msg) and groups then
         if redis:get('floodtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 Flood is already Locked', 1, 'md')
         else
@@ -585,7 +585,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '✅ #Done\nFlood Has Been Locked', 1, 'md')
         end
       end
-      if input:match("^[#!/]unlock flood$") and is_owner(msg) and groups then
+      if input:match("^[#!/]unlock flood$") and is_mod(msg) and groups then
         if not redis:get('floodtg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '🚫 flood is already Not Locked', 1, 'md')
         else
@@ -689,7 +689,7 @@ function tdcli_update_callback(data)
       ----------------------------
       --muteall
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute all$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute all$") and is_mod(msg) and groups then
         if redis:get('mute_alltg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute All is already on*', 1, 'md')
         else
@@ -697,7 +697,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute All has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute all$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute all$") and is_mod(msg) and groups then
         if not redis:get('mute_alltg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute All is already disabled*', 1, 'md')
         else
@@ -708,7 +708,7 @@ function tdcli_update_callback(data)
 
       --mute sticker
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute sticker$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute sticker$") and is_mod(msg) and groups then
         if redis:get('mute_stickertg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute sticker is already on*', 1, 'md')
         else
@@ -716,7 +716,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute sticker has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute sticker$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute sticker$") and is_mod(msg) and groups then
         if not redis:get('mute_stickertg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute sticker is already disabled*', 1, 'md')
         else
@@ -726,7 +726,7 @@ function tdcli_update_callback(data)
       end
       --mute gift
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute gift$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute gift$") and is_mod(msg) and groups then
         if redis:get('mute_contacttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift is already on*', 1, 'md')
         else
@@ -734,7 +734,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute gift$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute gift$") and is_mod(msg) and groups then
         if not redis:get('mute_contacttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift is already disabled*', 1, 'md')
         else
@@ -744,7 +744,7 @@ function tdcli_update_callback(data)
       end
       --mute contact
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute contact$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute contact$") and is_mod(msg) and groups then
         if redis:get('mute_contacttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute contact is already on*', 1, 'md')
         else
@@ -752,7 +752,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute contact has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute contact$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute contact$") and is_mod(msg) and groups then
         if not redis:get('mute_contacttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute contact is already disabled*', 1, 'md')
         else
@@ -762,7 +762,7 @@ function tdcli_update_callback(data)
       end
       --mute photo
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute photo$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute photo$") and is_mod(msg) and groups then
         if redis:get('mute_phototg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute photo is already on*', 1, 'md')
         else
@@ -770,7 +770,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute photo has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute photo$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute photo$") and is_mod(msg) and groups then
         if not redis:get('mute_phototg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute photo is already disabled*', 1, 'md')
         else
@@ -780,7 +780,7 @@ function tdcli_update_callback(data)
       end
       --mute audio
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute audio$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute audio$") and is_mod(msg) and groups then
         if redis:get('mute_audiotg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute audio is already on*', 1, 'md')
         else
@@ -788,7 +788,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute audio has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute audio$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute audio$") and is_mod(msg) and groups then
         if not redis:get('mute_audiotg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute audio is already disabled*', 1, 'md')
         else
@@ -798,7 +798,7 @@ function tdcli_update_callback(data)
       end
       --mute voice
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute voice$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute voice$") and is_mod(msg) and groups then
         if redis:get('mute_voicetg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute voice is already on*', 1, 'md')
         else
@@ -806,7 +806,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute voice has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute voice$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute voice$") and is_mod(msg) and groups then
         if not redis:get('mute_voicetg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute voice is already disabled*', 1, 'md')
         else
@@ -816,7 +816,7 @@ function tdcli_update_callback(data)
       end
       --mute video
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute video$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute video$") and is_mod(msg) and groups then
         if redis:get('mute_videotg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute video is already on*', 1, 'md')
         else
@@ -824,7 +824,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute video has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute video$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute video$") and is_mod(msg) and groups then
         if not redis:get('mute_videotg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute video is already disabled*', 1, 'md')
         else
@@ -834,7 +834,7 @@ function tdcli_update_callback(data)
       end
       --mute document
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute document$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute document$") and is_mod(msg) and groups then
         if redis:get('mute_documenttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute document is already on*', 1, 'md')
         else
@@ -842,7 +842,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute document has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute document$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute document$") and is_mod(msg) and groups then
         if not redis:get('mute_documenttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute document is already disabled*', 1, 'md')
         else
@@ -852,7 +852,7 @@ function tdcli_update_callback(data)
       end
       --mute  text
       groups = redis:sismember('groups',chat_id)
-      if input:match("^[#!/][Mm]ute text$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Mm]ute text$") and is_mod(msg) and groups then
         if redis:get('mute_texttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute text is already on*', 1, 'md')
         else
@@ -860,7 +860,7 @@ function tdcli_update_callback(data)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute text has been enabled*', 1, 'md')
         end
       end
-      if input:match("^[#!/][Uu]nmute text$") and is_owner(msg) and groups then
+      if input:match("^[#!/][Uu]nmute text$") and is_mod(msg) and groups then
         if not redis:get('mute_texttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute text is already disabled*', 1, 'md')
         else
@@ -938,7 +938,7 @@ function tdcli_update_callback(data)
       else
         text1 = "`UnMute`"
       end
-      if input:match("^[#!/][Ss]ettings$") and is_owner(msg) then
+      if input:match("^[#!/][Ss]ettings$") and is_mod(msg) then
         local text = "👥 SuperGroup Settings :".."\n"
         .."*Lock Flood => *".."`"..flood.."`".."\n"
         .."*Lock Link => *".."`"..link.."`".."\n"
@@ -1019,7 +1019,7 @@ function tdcli_update_callback(data)
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup </b>'..string.sub(input, 14)..' <b>Created</b>', 1, 'html')
       end
 
-      if input:match("^[#!/]del") and msg.reply_to_message_id_ ~= 0 then
+      if input:match("^[#!/]del") and is_mod(msg) and msg.reply_to_message_id_ ~= 0 then
         tdcli.deleteMessages(msg.chat_id_, {[0] = msg.reply_to_message_id_})
       end
 
@@ -1039,89 +1039,89 @@ function tdcli_update_callback(data)
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_stickertg:'..chat_id) and msg.content_.sticker_ and not is_owner(msg) then
+    if redis:get('mute_stickertg:'..chat_id) and msg.content_.sticker_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_giftg:'..chat_id) and msg.content_.animation_ and not is_owner(msg) then
+    if redis:get('mute_giftg:'..chat_id) and msg.content_.animation_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_contacttg:'..chat_id) and msg.content_.contact_ and not is_owner(msg) then
+    if redis:get('mute_contacttg:'..chat_id) and msg.content_.contact_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_phototg:'..chat_id) and msg.content_.photo_ and not is_owner(msg) then
+    if redis:get('mute_phototg:'..chat_id) and msg.content_.photo_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_audiotg:'..chat_id) and msg.content_.audio_ and not is_owner(msg) then
+    if redis:get('mute_audiotg:'..chat_id) and msg.content_.audio_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_voicetg:'..chat_id) and msg.content_.voice_  and not is_owner(msg) then
+    if redis:get('mute_voicetg:'..chat_id) and msg.content_.voice_  and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_videotg:'..chat_id) and msg.content_.video_ and not is_owner(msg) then
+    if redis:get('mute_videotg:'..chat_id) and msg.content_.video_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_documenttg:'..chat_id) and msg.content_.document_ and not is_owner(msg) then
+    if redis:get('mute_documenttg:'..chat_id) and msg.content_.document_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_texttg:'..chat_id) and msg.content_.text_ and not is_owner(msg) then
+    if redis:get('mute_texttg:'..chat_id) and msg.content_.text_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
-    if redis:get('forwardtg:'..chat_id) and msg.forward_info_ and not is_owner(msg) then
-      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
-    end
-
-    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") and not is_owner(msg) then
+    if redis:get('forwardtg:'..chat_id) and msg.forward_info_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('tagtg:'..chat_id) and input:match("#") and not is_owner(msg) then
+    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('usernametg:'..chat_id) and input:match("@") and not is_owner(msg) then
+    if redis:get('tagtg:'..chat_id) and input:match("#") and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('arabictg:'..chat_id) and input:match("[\216-\219][\128-\191]") and not is_owner(msg) then
+    if redis:get('usernametg:'..chat_id) and input:match("@") and not is_mod(msg) then
+      tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+    end
+
+    if redis:get('arabictg:'..chat_id) and input:match("[\216-\219][\128-\191]") and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
     local is_english_msg = input:match("[a-z]") or input:match("[A-Z]")
-    if redis:get('engtg:'..chat_id) and is_english_msg and not is_owner(msg) then
+    if redis:get('engtg:'..chat_id) and is_english_msg and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
     local is_fosh_msg = input:match("کیر") or input:match("کس") or input:match("کون") or input:match("85") or input:match("جنده") or input:match("ننه") or input:match("ننت") or input:match("مادر") or input:match("قهبه") or input:match("گایی") or input:match("سکس") or input:match("kir") or input:match("kos") or input:match("kon") or input:match("nne") or input:match("nnt")
-    if redis:get('badwordtg:'..chat_id) and is_fosh_msg and not is_owner(msg) then
+    if redis:get('badwordtg:'..chat_id) and is_fosh_msg and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
     local is_emoji_msg = input:match("😀") or input:match("😬") or input:match("😁") or input:match("😂") or  input:match("😃") or input:match("😄") or input:match("😅") or input:match("☺️") or input:match("🙃") or input:match("🙂") or input:match("😊") or input:match("😉") or input:match("😇") or input:match("😆") or input:match("😋") or input:match("😌") or input:match("😍") or input:match("😘") or input:match("😗") or input:match("😙") or input:match("😚") or input:match("🤗") or input:match("😎") or input:match("🤓") or input:match("🤑") or input:match("😛") or input:match("😏") or input:match("😶") or input:match("😐") or input:match("😑") or input:match("😒") or input:match("🙄") or input:match("🤔") or input:match("😕") or input:match("😔") or input:match("😡") or input:match("😠") or input:match("😟") or input:match("😞") or input:match("😳") or input:match("🙁") or input:match("☹️") or input:match("😣") or input:match("😖") or input:match("😫") or input:match("😩") or input:match("😤") or input:match("😲") or input:match("😵") or input:match("😭") or input:match("😓") or input:match("😪") or input:match("😥") or input:match("😢") or input:match("🤐") or input:match("😷") or input:match("🤒") or input:match("🤕") or input:match("😴") or input:match("💋") or input:match("❤️")
-    if redis:get('emojitg:'..chat_id) and is_emoji_msg and not is_owner(msg)  then
+    if redis:get('emojitg:'..chat_id) and is_emoji_msg and not is_mod(msg)  then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('captg:'..chat_id) and  msg.content_.caption_ and not is_owner(msg) then
+    if redis:get('captg:'..chat_id) and  msg.content_.caption_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('locatg:'..chat_id) and  msg.content_.location_ and not is_owner(msg) then
+    if redis:get('locatg:'..chat_id) and  msg.content_.location_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('inlinetg:'..chat_id) and  msg.via_bot_user_id_ ~= 0 and not is_owner(msg) then
+    if redis:get('inlinetg:'..chat_id) and  msg.via_bot_user_id_ ~= 0 and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('replytg:'..chat_id) and  msg.reply_to_message_id_ and not is_owner(msg) ~= 0 then
+    if redis:get('replytg:'..chat_id) and  msg.reply_to_message_id_ and not is_mod(msg) ~= 0 then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
@@ -1132,7 +1132,7 @@ function tdcli_update_callback(data)
     local floodMax = 5
     local floodTime = 2
     local hashflood = 'floodtg:'..msg.chat_id_
-    if redis:get(hashflood) and not is_momod(msg) then
+    if redis:get(hashflood) and not is_mod(msg) then
       local hash = 'flood:'..msg.sender_user_id_..':'..msg.chat_id_..':msg-num'
       local msgs = tonumber(redis:get(hash) or 0)
       if msgs > (floodMax - 1) then
