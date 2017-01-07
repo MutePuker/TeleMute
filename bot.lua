@@ -52,17 +52,15 @@ function is_owner(msg)
   return var
 end
 --- function promote
-function is_mod(msg)
+function is_momed(msg)
   local var = false
   local chat_id = msg.chat_id_
   local user_id = msg.sender_user_id_
-  if redis:sismember('mods:'..chat_id,user_id) then
+  local group_mods = redis:get('promote:'..chat_id)
+  if group_mods == tostring(user_id) then
     var = true
   end
-  if  redis:get('owners:'..chat_id) == tostring(user_id) then
-    var = true
-  end
-  for v, user in pairs(sudo_users) do
+  for v, user in pairs(momed_users) do
     if user == user_id then
       var = true
     end
@@ -114,23 +112,6 @@ end
 function dl_cb(arg, data)
 end
 
-local function setmod_reply(extra, result, success)
-vardump(result)
-local msg = result.id_
-local user = result.sender_user_id_
-local chat = result.chat_id_
-redis:sadd('mods:'..chat,user)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' moded', 1, 'md')
-end
-
-local function remmod_reply(extra, result, success)
-vardump(result)
-local msg = result.id_
-local user = result.sender_user_id_
-local chat = result.chat_id_
-redis:srem('mods:'..chat,user)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..user..' rem moded', 1, 'md')
-end
 
 local function setowner_reply(extra, result, success)
   t = vardump(result)
@@ -153,7 +134,26 @@ local function deowner_reply(extra, result, success)
   print(user)
 end
 
+local function promote_reply(extra, result, success)
+  t = vardump(result)
+  local msg_id = result.id_
+  local user = result.sender_user_id_
+  local ch = result.chat_id_
+  redis:del('promote:'..ch)
+  redis:set('promote:'..ch,user)
+  tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
+  print(user)
+end
 
+local function demote_reply(extra, result, success)
+  t = vardump(result)
+  local msg_id = result.id_
+  local user = result.sender_user_id_
+  local ch = result.chat_id_
+  redis:del('promote:'..ch)
+  tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Promoted*', 1, 'md')
+  print(user)
+end
 
 function kick_reply(extra, result, success)
   b = vardump(result)
@@ -254,35 +254,33 @@ function tdcli_update_callback(data)
         tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
       end
       -----------------------------------------------------------------------------------------------------------------------
-     if input:match('^[/!#]promote') and is_sudo(msg) and msg.reply_to_message_id_ then
-tdcli.getMessage(chat_id,msg.reply_to_message_id_,setmod_reply,nil)
-end
-if input:match('^[/!#]demote') and is_sudo(msg) and msg.reply_to_message_id_ then
-tdcli.getMessage(chat_id,msg.reply_to_message_id_,remmod_reply,nil)
-end
+      if input:match('^[!#/]([Pp]romote)$') and is_owner(msg) and msg.reply_to_message_id_ then
+        tdcli.getMessage(chat_id,msg.reply_to_message_id_,promote_reply,nil)
+      end
+      if input == "[!#/]([Dd]emote)" and is_sudo(msg) and msg.reply_to_message_id_ then
+        tdcli.getMessage(chat_id,msg.reply_to_message_id_,demote_reply,nil)
+      end
 
-sm = input:match('^[/!#]promote (.*)')
-if sm and is_sudo(msg) then
-  redis:sadd('mods:'..chat_id,sm)
-  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..sm..' moded', 1, 'md')
-end
+      if input:match('^[/!#]promote (.*)') and not input:find('@') and is_sudo(msg) then
+        redis:del('promote:'..chat_id)
+        redis:set('promote:'..chat_id,input:match('^[/!#]promote (.*)'))
+        tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]promote (.*)')..' Promoted', 1, 'md')
+      end
 
-dm = input:match('^[/!#]demote (.*)')
-if dm and is_sudo(msg) then
-  redis:srem('mods:'..chat_id,dm)
-  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..dm..' rem moded', 1, 'md')
-end
+      if input:match('^[/!#]promote (.*)') and input:find('@') and is_owner(msg) then
+        function Inline_Callback_(arg, data)
+          redis:del('promote:'..chat_id)
+          redis:set('promote:'..chat_id,input:match('^[/!#]promote (.*)'))
+          tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]promote (.*)')..' Promoted', 1, 'md')
+        end
+        tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[/!#]promote (.*)')}, Inline_Callback_, nil)
+      end
 
-if input:match('^[/!#]modlist') then
-if redis:scard('mods:'..chat_id) == 0 then
-tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Mod', 1, 'md')
-end
-local text = "Group Mod List : \n"
-for k,v in pairs(redis:smembers('mods:'..chat_id)) do
-text = text.."_"..k.."_ - *"..v.."*\n"
-end
-tdcli.sendText(chat_id, 0, 0, 1, nil, text, 1, 'md')
-end
+
+      if input:match('^[/!#]demote (.*)') and is_sudo(msg) then
+        redis:del('promote:'..chat_id)
+        tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' Demoted', 1, 'md')
+      end
       ---------------------------------------------------------------------------------------------------------------------------------
       if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
         redis:sadd('groups',chat_id)
@@ -987,26 +985,25 @@ end
         tdcli.changeChatTitle(chat_id, string.sub(input, 10), 1)
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup Name Changed To </b><code>'..string.sub(input, 10)..'</code>', 1, 'html')
       end
+	  
       if input:match("^[#!/][Cc]hangename") and is_sudo(msg) then
         tdcli.changeName(string.sub(input, 13), nil, 1)
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Bot Name Changed To </b><code>'..string.sub(input, 13)..'</code>', 1, 'html')
       end
+	  
       if input:match("^[#!/][Cc]hangeuser") and is_sudo(msg) then
         tdcli.changeUsername(string.sub(input, 13), nil, 1)
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Bot UserName Changed To </b><code>'..string.sub(input, 13)..'</code>', 1, 'html')
       end
+	  
       if input:match("^[#!/][Dd]eluser") and is_sudo(msg) then
         tdcli.changeUsername('')
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '#Done\nUsername Has Been Deleted', 1, 'html')
       end
+	  
       if input:match("^[#!/][Ee]dit") and is_owner(msg) then
         tdcli.editMessageText(chat_id, reply_id, nil, string.sub(input, 7), 'html')
       end
-
-      if text:match("^[#!/]git pull$") and is_sudo(msg) then
-  io.popen("git pull")
-         send(msg.chat_id_, msg.id_, 1, '✅ عمليات [Git Pull] به اتمام رسيد . . .‌\n🔸پيشنهاد ميشود ربات در مجددا launch كنيد . . . ', 1, 'md')
-    end
 
       if input:match("^[#!/]delpro") and is_sudo(msg) then
         tdcli.DeleteProfilePhoto(chat_id, {[0] = msg.id_})
@@ -1016,6 +1013,7 @@ end
       if input:match("^[#!/][Ii]nvite") and is_sudo(msg) then
         tdcli.addChatMember(chat_id, string.sub(input, 9), 20)
       end
+	  
       if input:match("^[#!/][Cc]reatesuper") and is_sudo(msg) then
         tdcli.createNewChannelChat(string.sub(input, 14), 1, 'My Supergroup, my rules')
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup </b>'..string.sub(input, 14)..' <b>Created</b>', 1, 'html')
@@ -1080,7 +1078,7 @@ end
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or input:match("[Tt].[Mm][Ee]/") and not is_owner(msg) then
+    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") and not is_owner(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
@@ -1114,7 +1112,7 @@ end
     if redis:get('captg:'..chat_id) and  msg.content_.caption_ and not is_owner(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
-
+end
     if redis:get('locatg:'..chat_id) and  msg.content_.location_ and not is_owner(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
