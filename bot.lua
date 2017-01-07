@@ -141,7 +141,17 @@ tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '#Done\n🔹user '..result.sender_
 end
 
 
+local function setmute_reply(extra, result, success)
+vardump(result)
+redis:sadd('muteusers:'..result.chat_id_,result.sender_user_id_)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..result.sender_user_id_..' added to mutelist', 1, 'md')
+end
 
+local function demute_reply(extra, result, success)
+vardump(result)
+redis:srem('muteusers:'..result.chat_id_,result.sender_user_id_)
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..result.sender_user_id_..' removed to mutelist', 1, 'md')
+end
 
 
 
