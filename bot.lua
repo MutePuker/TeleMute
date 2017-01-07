@@ -281,6 +281,17 @@ function tdcli_update_callback(data)
         redis:del('promote:'..chat_id)
         tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' Demoted', 1, 'md')
       end
+			
+			if input:match('^[/!#]modlist') then
+if redis:scard('mods:'..chat_id) == 0 then
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not Mod', 1, 'md')
+end
+local text = "Group Mod List : \n"
+for k,v in pairs(redis:smembers('mods:'..chat_id)) do
+text = text.."_"..k.."_ - *"..v.."*\n"
+end
+tdcli.sendText(chat_id, 0, 0, 1, nil, text, 1, 'md')
+end
       ---------------------------------------------------------------------------------------------------------------------------------
       if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
         redis:sadd('groups',chat_id)
