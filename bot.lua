@@ -221,14 +221,25 @@ local owner_list = redis:get('owners:'..chat_id)
 text85 = '👤*Group Owner :*\n\n '..owner_list
 tdcli.sendText(chat_id, 0, 0, 1, nil, text85, 1, 'md')
 end
-	if input:match('^[!#/]([Ss]etowner)$') and not input:find('@') and is_sudo(msg) then
+	if input:match('^[/!#]setowner (.*)') and not input:find('@') and is_sudo(msg) then
 		redis:del('owners:'..chat_id)
-		redis:set('owners:'..chat_id,input:match('^[/!#]([Ss]etowner) (.*)'))
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]([Ss]etowner) (.*)')..' ownered', 1, 'md')
+		redis:set('owners:'..chat_id,input:match('^[/!#]setowner (.*)'))
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]setowner (.*)')..' ownered', 1, 'md')
 	end
-	if input:match('^[!/#]([Dd]elowner) (.*)') and is_sudo(msg) then
+	
+	if input:match('^[/!#]setowner (.*)') and input:find('@') and is_owner(msg) then
+	function Inline_Callback_(arg, data)
 		redis:del('owners:'..chat_id)
-		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[!/#]([Dd]elowner) (.*)')..' rem ownered', 1, 'md')
+		redis:set('owners:'..chat_id,input:match('^[/!#]setowner (.*)'))
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]setowner (.*)')..' ownered', 1, 'md')
+	end
+		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[/!#]setowner (.*)')}, Inline_Callback_, nil)
+	end
+	
+	
+	if input:match('^[/!#]delowner (.*)') and is_sudo(msg) then
+		redis:del('owners:'..chat_id)
+		tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..input:match('^[/!#]delowner (.*)')..' rem ownered', 1, 'md')
 	end
 	-----------------------------------------------------------------------------------------------------------------------
 	if input:match('^[!#/]([Pp]romote)$') and is_owner(msg) and msg.reply_to_message_id_ then
