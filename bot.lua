@@ -60,7 +60,7 @@ function is_mod(msg)
   if group_mods == tostring(user_id) then
     var = true
   end
-  for v, user in pairs(momed_users) do
+  for v, user in pairs(sudo_users) do
     if user == user_id then
       var = true
     end
