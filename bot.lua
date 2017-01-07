@@ -151,7 +151,7 @@ local msg_id = result.id_
 local user = result.sender_user_id_
 local ch = result.chat_id_
 redis:del('promote:'..ch)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Demoted*', 1, 'md')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Promoted*', 1, 'md')
 print(user)
 end
 
@@ -251,7 +251,7 @@ end
 	if input:match('^[!#/]([Pp]romote)$') and is_owner(msg) and msg.reply_to_message_id_ then
 tdcli.getMessage(chat_id,msg.reply_to_message_id_,promote_reply,nil)
 end
-if input == "[!#/]demote" and is_sudo(msg) and msg.reply_to_message_id_ then
+if input == "[!#/]([Dd]emote)" and is_sudo(msg) and msg.reply_to_message_id_ then
 tdcli.getMessage(chat_id,msg.reply_to_message_id_,demote_reply,nil)
 end
 
