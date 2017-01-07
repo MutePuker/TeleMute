@@ -135,22 +135,21 @@ local function deowner_reply(extra, result, success)
 end
 
 local function promote_reply(extra, result, success)
-  t = vardump(result)
-  local msg_id = result.id_
-  local user = result.sender_user_id_
-  local ch = result.chat_id_
-  redis:del('promote:'..ch)
-  redis:set('promote:'..ch,user)
+vardump(result)
+local msg = result.id_
+local user = result.sender_user_id_
+local chat = result.chat_id
+redis:sadd('mods:'..chat,user)
   tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
   print(user)
 end
 
 local function demote_reply(extra, result, success)
-  t = vardump(result)
-  local msg_id = result.id_
-  local user = result.sender_user_id_
-  local ch = result.chat_id_
-  redis:del('promote:'..ch)
+vardump(result)
+local msg = result.id_
+local user = result.sender_user_id_
+local chat = result.chat_id
+  redis:srem('promote:'..chat,user)
   tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *rem Promoted*', 1, 'md')
   print(user)
 end
