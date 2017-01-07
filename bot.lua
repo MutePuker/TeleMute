@@ -1073,7 +1073,7 @@ function tdcli_update_callback(data)
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") and not is_owner(msg) then
+    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or input:match("[Tt].[Mm][Ee]/") and not is_owner(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
