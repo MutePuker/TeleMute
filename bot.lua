@@ -139,7 +139,7 @@ vardump(result)
 local msg = result.id_
 local user = result.sender_user_id_
 local chat = result.chat_id
-redis:sadd('mods:'..chat,user)
+redis:sadd('promote:'..chat,user)
   tdcli.sendText(result.chat_id_, 0, 0, 1, nil, '🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
   print(user)
 end
