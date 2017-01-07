@@ -143,7 +143,7 @@ local msg = result.id_
 local user = result.sender_user_id_
 local chat = result.chat_id_
 redis:sadd('mods:'..chat,user)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, ' #Done\nuser '..user..' *Promoted*', 1, 'md')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, ' 🚀 #Done\nuser '..user..' *Promoted*', 1, 'md')
 end
 
 local function remmod_reply(extra, result, success)
@@ -152,7 +152,7 @@ local msg = result.id_
 local user = result.sender_user_id_
 local chat = result.chat_id_
 redis:srem('mods:'..chat,user)
-tdcli.sendText(result.chat_id_, 0, 0, 1, nil, ' #Done\nuser '..user..' *Rem Promoted*', 1, 'md')
+tdcli.sendText(result.chat_id_, 0, 0, 1, nil, ' 🚀 #Done\nuser '..user..' *Rem Promoted*', 1, 'md')
 end
 
 function kick_reply(extra, result, success)
@@ -261,16 +261,16 @@ if input:match('^[/!#]demote') and is_sudo(msg) and msg.reply_to_message_id_ the
 tdcli.getMessage(chat_id,msg.reply_to_message_id_,remmod_reply,nil)
 end
 			
-			sm = input:match('^[/!#]setpromotemod (.*)')
+			sm = input:match('^[/!#]promote (.*)')
 if sm and is_sudo(msg) then
   redis:sadd('mods:'..chat_id,sm)
-  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..sm..' moded', 1, 'md')
+  tdcli.sendText(chat_id, 0, 0, 1, nil, '🚀 #Done\nuser '..sm..'*Add Promote*', 1, 'md')
 end
 
 dm = input:match('^[/!#]demote (.*)')
 if dm and is_sudo(msg) then
   redis:srem('mods:'..chat_id,dm)
-  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..dm..' rem moded', 1, 'md')
+  tdcli.sendText(chat_id, 0, 0, 1, nil, '🚀 #Done\nuser '..dm..'*Rem Promote*', 1, 'md')
 end
 
 if input:match('^[/!#]modlist') then
