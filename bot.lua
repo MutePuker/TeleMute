@@ -24,6 +24,18 @@ end
 return var
 end
 
+function is_normal(msg)
+local chat_id = msg.chat_id_
+local user_id = msg.sender_user_id_
+local mutel = redis:sismember('muteusers:'..chat_id,user_id)
+if mutel then
+return true
+end
+if not mutel then
+return false
+end
+end
+
 function is_owner(msg)
   local var = false
   local chat_id = msg.chat_id_
@@ -205,6 +217,37 @@ end
 		tdcli_function ({ID = "SearchPublicChat",username_ =input:match('^[!#/]kick (.*)')}, Inline_Callback_, nil)
 	end
 			--------------------------------------------------------
+			----------------------------------------------------------
+			if input:match('^[/!#]muteuser') and is_owner(msg) and msg.reply_to_message_id_ then
+redis:set('tbt:'..chat_id,'yes')
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,setmute_reply,nil)
+end
+if input:match('^[/!#]unmuteuser') and is_owner(msg) and msg.reply_to_message_id_ then
+tdcli.getMessage(chat_id,msg.reply_to_message_id_,demute_reply,nil)
+end
+mu = input:match('^[/!#]muteuser (.*)')
+if mu and is_owner(msg) then
+  redis:sadd('muteusers:'..chat_id,mu)
+  redis:set('tbt:'..chat_id,'yes')
+  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..mu..' added to mutelist', 1, 'md')
+end
+umu = input:match('^[/!#]unmuteuser (.*)')
+if umu and is_owner(msg) then
+  redis:srem('muteusers:'..chat_id,umu)
+  tdcli.sendText(chat_id, 0, 0, 1, nil, 'user '..umu..' removed to mutelist', 1, 'md')
+end
+
+if input:match('^[/!#]muteusers') then
+if redis:scard('muteusers:'..chat_id) == 0 then
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Not MuteUser', 1, 'md')
+end
+local text = "MuteUser List:\n"
+for k,v in pairs(redis:smembers('muteusers:'..chat_id)) do
+text = text.."<b>"..k.."</b> - <b>"..v.."</b>\n"
+end
+tdcli.sendText(chat_id, 0, 0, 1, nil, text, 1, 'html')
+end
+			-------------------------------------------------------
 			
 			--lock links
 groups = redis:sismember('groups',chat_id)
@@ -956,6 +999,10 @@ if redis:get('mute_alltg:'..chat_id) and msg and not is_owner(msg) then
 	  if redis:get('replytg:'..chat_id) and  msg.reply_to_message_id_ and not is_owner(msg) ~= 0 then
         tdcli.deleteMessages(chat_id, {[0] = msg.id_})
       end
+		
+		if redis:get('tbt:'..chat_id) and is_normal(msg) then
+     tdcli.deleteMessages(chat_id, {[0] = msg.id_})
+   end
 
   elseif (data.ID == "UpdateOption" and data.name_ == "my_id") then
     -- @MuteTeam
