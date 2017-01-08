@@ -812,7 +812,7 @@ end
         if not redis:get('mute_voicetg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute voice is already disabled*', 1, 'md')
         else
-          redis:del('mute_videotg:'..chat_id)
+          redis:del('mute_voicetg:'..chat_id)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute voice has been disabled*', 1, 'md')
         end
       end
