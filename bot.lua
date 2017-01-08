@@ -1037,7 +1037,7 @@ end
     end
 
     local input = msg.content_.text_
-    if redis:get('mute_alltg:'..chat_id) and msg and not is_owner(msg) then
+    if redis:get('mute_alltg:'..chat_id) and msg and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
