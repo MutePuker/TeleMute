@@ -1079,8 +1079,8 @@ end
     if redis:get('forwardtg:'..chat_id) and msg.forward_info_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
-    local linkn = input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or input:match("[Tt].[Mm][Ee]/")
-    if redis:get('lock_linkstg:'..chat_id) and input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") and not is_mod(msg) then
+    local is_link_msg = input:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/") or input:match("[Tt].[Mm][Ee]/")
+    if redis:get('lock_linkstg:'..chat_id) and is_link_msg and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
