@@ -729,18 +729,18 @@ end
       --mute gift
       groups = redis:sismember('groups',chat_id)
       if input:match("^[#!/][Mm]ute gift$") and is_mod(msg) and groups then
-        if redis:get('mute_contacttg:'..chat_id) then
+        if redis:get('mute_gifttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift is already on*', 1, 'md')
         else
-          redis:set('mute_contacttg:'..chat_id, true)
+          redis:set('mute_gifttg:'..chat_id, true)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift has been enabled*', 1, 'md')
         end
       end
       if input:match("^[#!/][Uu]nmute gift$") and is_mod(msg) and groups then
-        if not redis:get('mute_contacttg:'..chat_id) then
+        if not redis:get('mute_gifttg:'..chat_id) then
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift is already disabled*', 1, 'md')
         else
-          redis:del('mute_contacttg:'..chat_id)
+          redis:del('mute_gifttg:'..chat_id)
           tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '*Mute gift has been disabled*', 1, 'md')
         end
       end
@@ -1045,7 +1045,7 @@ end
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
-    if redis:get('mute_giftg:'..chat_id) and msg.content_.animation_ and not is_mod(msg) then
+    if redis:get('mute_gifttg:'..chat_id) and msg.content_.animation_ and not is_mod(msg) then
       tdcli.deleteMessages(chat_id, {[0] = msg.id_})
     end
 
