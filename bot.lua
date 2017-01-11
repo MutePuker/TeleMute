@@ -283,6 +283,26 @@ text = text.."_"..k.."_ - *"..v.."*\n"
 end
 tdcli.sendText(chat_id, 0, 0, 1, nil, text, 1, 'md')
 end
+			--------------------------------------------------
+			if input:match('^[/!#]setlink (.*)') and is_owner(msg) then
+redis:set('link'..chat_id,input:match('^[/!#]setlink (.*)'))
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Link Saved'), 1, 'html')
+end
+
+if input:match('^[/!#]link') and is_owner(msg) then
+link = redis:get('link'..chat_id)
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Link :\n'..link, 1, 'html')
+end
+		-------------------------------------------------------
+		if input:match('^[/!#]setrules (.*)') and is_owner(msg) then
+redis:set('gprules'..chat_id,input:match('^[/!#]setlink (.*)'))
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules Saved'), 1, 'html')
+end
+
+if input:match('^[/!#]rules') then
+rules = redis:get('gprules'..chat_id)
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules :\n'..rules, 1, 'html')
+end
       ---------------------------------------------------------------------------------------------------------------------------------
       if input:match("^[#!/][Aa]dd$") and is_sudo(msg) then
         redis:sadd('groups',chat_id)
