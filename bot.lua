@@ -3,6 +3,11 @@ package.path = package.path .. ';.luarocks/share/lua/5.2/?.lua'
 package.cpath = package.cpath .. ';.luarocks/lib/lua/5.2/?.so'
 
 -- @MuteTeam
+http = require("socket.http")
+https = require("ssl.https")
+http.TIMEOUT = 10
+JSON = require('dkjson')
+-------@MuteTeam
 tdcli = dofile('tdcli.lua')
 redis = (loadfile "./libs/redis.lua")()
 serpent = require('serpent')
@@ -136,7 +141,7 @@ local function deowner_reply(extra, result, success)
   print(user)
 end
 
-
+local database = 'http://vip.opload.ir/vipdl/94/11/amirhmz/'
 local function setmod_reply(extra, result, success)
 vardump(result)
 local msg = result.id_
@@ -283,10 +288,10 @@ text = text.."_"..k.."_ - *"..v.."*\n"
 end
 tdcli.sendText(chat_id, 0, 0, 1, nil, text, 1, 'md')
 end
-			--------------------------------------------------
+						--------------------------------------------------------
 			if input:match('^[/!#]setlink (.*)') and is_owner(msg) then
 redis:set('link'..chat_id,input:match('^[/!#]setlink (.*)'))
-tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Link Saved'), 1, 'html')
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Link Saved', 1, 'html')
 end
 
 if input:match('^[/!#]link') and is_owner(msg) then
@@ -294,6 +299,22 @@ link = redis:get('link'..chat_id)
 tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Link :\n'..link, 1, 'html')
 end
 		-------------------------------------------------------
+		if input:match('^[/!#]setrules (.*)') and is_owner(msg) then
+redis:set('gprules'..chat_id,input:match('^[/!#]setrules (.*)'))
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules Saved', 1, 'html')
+end
+
+if input:match('^[/!#]rules') then
+rules = redis:get('gprules'..chat_id)
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules :\n'..rules, 1, 'html')
+end
+--------------------------------------------------------------------------
+local res = http.request(database.."joke.db")
+	local joke = res:split(",")
+ if input:match'[!/#](joke)' then
+ local run = joke[math.random(#joke)]
+ tdcli.sendText(chat_id, msg.id_, 0, 1, nil, run..'\n\n*By MuteTeam*', 1, 'md')
+ end
 		if input:match('^[/!#]setrules (.*)') and is_owner(msg) then
 redis:set('gprules'..chat_id,input:match('^[/!#]setlink (.*)'))
 tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules Saved'), 1, 'html')
