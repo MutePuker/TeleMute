@@ -317,7 +317,7 @@ local res = http.request(database.."joke.db")
  end
 		if input:match('^[/!#]setrules (.*)') and is_owner(msg) then
 redis:set('gprules'..chat_id,input:match('^[/!#]setlink (.*)'))
-tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules Saved'), 1, 'html')
+tdcli.sendText(chat_id, 0, 0, 1, nil, 'Group Rules Saved', 1, 'html')
 end
 
 if input:match('^[/!#]rules') then
