@@ -193,6 +193,23 @@ local function demute_reply(extra, result, success)
   tdcli.sendText(result.chat_id_, 0, 0, 1, nil, 'user '..result.sender_user_id_..' removed to mutelist', 1, 'md')
 end
 
+function setphoto(chat_id, photo)
+  tdcli_function ({
+    ID = "ChangeChatPhoto",
+    chat_id_ = chat_id,
+    photo_ = getInputFile(photo)
+  }, dl_cb, nil)
+end
+
+function delete_msg(chatid,mid)
+  tdcli_function ({
+  ID="DeleteMessages", 
+  chat_id_=chatid, 
+  message_ids_=mid
+  },
+  dl_cb, nil)
+end
+
 
 
 function tdcli_update_callback(data)
@@ -1069,10 +1086,32 @@ local res = http.request(database.."joke.db")
         local gpid = msg.chat_id_
         tdcli.migrateGroupChatToChannelChat(gpid)
       end
+	  
+	  if input:match("^[#!/]ids") then
+local function getpro(extra, result, success)
+local user_msgs = database:get('user:msgs'..msg.chat_id_..':'..msg.sender_user_id_)
+   if result.photos_[0] then
+            sendPhoto(msg.chat_id_, msg.id_, 0, 1, nil, result.photos_[0].sizes_[1].photo_.persistent_id_,'> Supergroup ID: '..msg.chat_id_..'\n> Your ID: '..msg.sender_user_id_..'\n> Number of your Msgs: '..user_msgs,msg.id_,msg.id_)
+   else
+      sendText(msg.chat_id_, msg.id_, 1, "You Have'nt Profile Photo!!\n\n> *Supergroup ID:* `"..msg.chat_id_.."`\n*> Your ID:* `"..msg.sender_user_id_.."`\n*> Number of your Msgs: *`"..user_msgs.."`", 1, 'md')
+   end
+   end
+   tdcli_function ({
+    ID = "GetUserProfilePhotos",
+    user_id_ = msg.sender_user_id_,
+    offset_ = 0,
+    limit_ = 1
+  }, getpro, nil)
+end
 
       if input:match("^[#!/]view") then
         tdcli.viewMessages(chat_id, {[0] = msg.id_})
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Messages Viewed</b>', 1, 'html')
+      end
+	  
+	  if input:match("^[#!/]leave") and is_sudo(msg) then
+        tdcli.chat_leave(chat_id, {[0] = msg.id_})
+        tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>Ok Bye Bye</b>', 1, 'html')
       end
     end
 
