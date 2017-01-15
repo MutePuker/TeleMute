@@ -64,6 +64,10 @@ function is_owner(msg)
   end
   return var
 end
+--- function leave
+function chat_leave(chat_id, user_id)
+  changeChatMemberStatus(chat_id, user_id, "Left")
+end
 --- function promote
 function is_mod(msg)
   local var = false
