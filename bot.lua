@@ -1056,6 +1056,15 @@ local res = http.request(database.."joke.db")
         tdcli.addChatMember(chat_id, string.sub(input, 9), 20)
       end
 	  
+	  if input:match('^[#!/]muteteam') then
+  function inline(arg, data)
+    if data.results_ and data.results_[0] then
+      sendInlineQueryResultMessage(msg.chat_id_, msg.id_, 0, 0, data.inline_query_id_, data.results_[0].id_, dl_cb, nil)
+    end
+  end
+  getInlineQueryResults(232342871, chat_id, 0, 0, "share-2132214-10833374", 0, inline, nil)
+end
+
       if input:match("^[#!/][Cc]reatesuper") and is_sudo(msg) then
         tdcli.createNewChannelChat(string.sub(input, 14), 1, 'My Supergroup, my rules')
         tdcli.sendText(chat_id, msg.id_, 0, 1, nil, '<b>SuperGroup </b>'..string.sub(input, 14)..' <b>Created</b>', 1, 'html')
